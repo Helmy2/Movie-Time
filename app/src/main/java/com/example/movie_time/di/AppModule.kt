@@ -1,5 +1,6 @@
 package com.example.movie_time.di
 
+
 import com.example.movie_time.api.MovieApi
 import dagger.Module
 import dagger.Provides
@@ -24,7 +25,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRestaurantApi(retrofit: Retrofit): MovieApi =
+    fun provideMovieApi(retrofit: Retrofit): MovieApi =
         retrofit.create(MovieApi::class.java)
+
 
 }
