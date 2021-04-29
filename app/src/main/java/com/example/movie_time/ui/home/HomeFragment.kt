@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movie_time.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -32,36 +35,66 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listsAdapter = ListsAdapter()
+        val headAdapter = HeadAdapter()
+        val movieAdapter = MovieAdapter()
+        val movieAdapter2 = MovieAdapter()
 
         binding.apply {
-            recyclerViewLists.apply {
-                adapter = listsAdapter
-                layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
-                setHasFixedSize(true)
+            recyclerViewMovies.apply {
+                adapter = movieAdapter
+                layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
 
-            button.setOnClickListener {
-                viewModel.refresh()
-                binding.button.visibility = View.GONE
-                binding.progressBar.visibility = View.VISIBLE
+            recyclerViewMovies2.apply {
+                adapter = movieAdapter2
+                layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
 
-        }
-        viewModel.restaurants.observe(viewLifecycleOwner) {
-            listsAdapter.submitList(it)
+            recyclerViewHead.apply {
+                adapter = headAdapter
+                layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            }
         }
 
+        binding.buttonRefresh.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.refreshDelay()
+            }
+            it.visibility = View.GONE
+            it.visibility = View.VISIBLE
+        }
+
+        viewModel.headListData.observe(viewLifecycleOwner) {
+            headAdapter.submitList(it)
+            movieAdapter.submitList(it)
+            movieAdapter2.submitList(it)
+        }
+
+        internetErrorHandling()
+    }
+
+    private fun internetErrorHandling() {
         viewModel.error.observe(viewLifecycleOwner) {
             if (it != null) {
-                binding.textView.text = it
-                binding.button.visibility = View.VISIBLE
-                binding.progressBar.visibility = View.GONE
-            }else{
-                binding.textView.text = ""
-                binding.button.visibility = View.GONE
-                binding.progressBar.visibility = View.GONE
+                binding.apply {
+                    buttonRefresh.visibility = View.VISIBLE
+                    progressBar.visibility = View.GONE
+                    textViewPopular.visibility = View.GONE
+                    textViewPopular2.visibility = View.GONE
+                }
+
+            } else {
+                binding.apply {
+                    buttonRefresh.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                    textViewPopular.visibility = View.VISIBLE
+                    textViewPopular2.visibility = View.VISIBLE
+                }
             }
         }
     }
+
 }
