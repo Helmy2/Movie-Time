@@ -1,8 +1,6 @@
 package com.example.movie_time.data
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
 
 data class Result(
     val adult: Boolean,
@@ -37,8 +35,7 @@ data class Result(
     @SerializedName("original_name")
     val originalName: String,
 
-    val genres: List<Genres>,
-    val first_air_date: String
+    val genres: List<Genres>
 )
 
 data class Genres(

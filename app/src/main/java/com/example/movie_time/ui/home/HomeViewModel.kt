@@ -30,10 +30,6 @@ class HomeViewModel @Inject constructor(
     val error: LiveData<String?>
         get() = _error
 
-    private val _detailsData = MutableLiveData<Result>()
-    val detailsData: LiveData<Result>
-        get() = _detailsData
-
     private val _popularType = MutableLiveData<Int>()
     val popularType: LiveData<Int>
         get() = _popularType
