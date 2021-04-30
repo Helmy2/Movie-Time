@@ -2,6 +2,7 @@ package com.example.movie_time.ui.home
 
 
 import androidx.lifecycle.*
+import com.example.movie_time.api.MovieApi.Companion.MOVIE
 import com.example.movie_time.data.MovieRepository
 import com.example.movie_time.data.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,25 +21,38 @@ class HomeViewModel @Inject constructor(
     val headListData: LiveData<List<Result>>
         get() = _headListData
 
+    private val _popularListData = MutableLiveData<List<Result>>()
+    val popularListData: LiveData<List<Result>>
+        get() = _popularListData
+
 
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?>
         get() = _error
 
+    private val _detailsData = MutableLiveData<Result>()
+    val detailsData: LiveData<Result>
+        get() = _detailsData
+
+    private val _popularType = MutableLiveData<Int>()
+    val popularType: LiveData<Int>
+        get() = _popularType
 
     init {
         if (headListData.value == null) {
             refresh()
         }
+        _popularType.value = MOVIE
     }
 
-    suspend fun refreshDelay(){
+    suspend fun refreshDelay() {
         delay(2000)
         refresh()
     }
 
-    private fun refresh(){
+    private fun refresh() {
         getTrending()
+        getPopular(1)
     }
 //
 //    private fun getTopRatedMovies(page: Int) = viewModelScope.launch {
@@ -63,7 +77,7 @@ class HomeViewModel @Inject constructor(
 //        _restaurants.value = list
 //    }
 
-    private fun getTrending(){
+    private fun getTrending() {
         viewModelScope.launch {
             val movieResponse = repository.getTrending()
             _error.value = movieResponse.error?.localizedMessage
@@ -71,19 +85,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-//        private fun getPopular() = viewModelScope.launch {
-//            delay(100)
-//            val movieResponse = repository.getPopularMovies()
-//            _error.value = movieResponse.error?.localizedMessage
-//
-//            val list = mutableListOf<MovieResponse>()
-//            _restaurants.value?.let { list.addAll(it) }
-//
-//            if (movieResponse.data !in list)
-//                movieResponse.data?.let { list.add(it) }
-//
-//            _restaurants.value = list
-//        }
-//    }
+    fun getPopular(type: Int) = viewModelScope.launch {
+        val movieResponse = repository.getPopular(type)
+        _error.value = movieResponse.error?.localizedMessage
+        _popularListData.value = movieResponse.data?.results
+        _popularType.value = type
+    }
 
 }

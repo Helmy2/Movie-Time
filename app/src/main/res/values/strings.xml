@@ -4,4 +4,8 @@
     <string name="title_movie">Movie</string>
     <string name="title_tv">TV</string>
     <string name="popular">Popular</string>
+    <string name="movie">Movie</string>
+    <string name="tv_series">TV Series</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

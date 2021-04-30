@@ -2,6 +2,7 @@ package com.example.movie_time.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +38,7 @@ class MovieAdapter() :
                 else
                     textView.text = result.name
 
+                textViewReleaseDate.text = result.releaseDate
                 textViewVote.text = result.voteAverage.toString()
                 Glide.with(itemView)
                     .load(
@@ -48,6 +50,11 @@ class MovieAdapter() :
                     .error(R.drawable.ic_error)
                     .into(imageView)
 
+                root.setOnClickListener {
+                    val action =
+                        HomeFragmentDirections.actionNavigationHomeToDetailsFragment2(result.id)
+                    it.findNavController().navigate(action)
+                }
             }
         }
     }

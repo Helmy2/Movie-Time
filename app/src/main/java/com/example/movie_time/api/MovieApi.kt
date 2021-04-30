@@ -2,13 +2,13 @@ package com.example.movie_time.api
 
 
 import com.example.movie_time.data.MovieResponse
+import com.example.movie_time.data.Result
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 
 interface MovieApi {
-
     // https://api.themoviedb.org/3/movie/popular?api_key=6e63c2317fbe963d76c3bdc2b785f6d1&page=1
     // https://api.themoviedb.org/3/movie/299534?api_key=6e63c2317fbe963d76c3bdc2b785f6d1
     // https://api.themoviedb.org/3/
@@ -17,6 +17,8 @@ interface MovieApi {
         const val API_KEY = "?api_key=baf62556ad57430e7e61c1ace8490114"
         const val BASE_URL = "https://api.themoviedb.org/3/"
         const val IMAGE_URL = "https://image.tmdb.org/t/p/w500/"
+        const val MOVIE = 1
+        const val TV = 2
     }
 
     @GET("movie/top_rated$API_KEY")
@@ -27,4 +29,14 @@ interface MovieApi {
 
     @GET("movie/popular$API_KEY")
     suspend fun getPopularMovies(): MovieResponse
+
+    @GET("tv/popular$API_KEY")
+    suspend fun getPopularTV(): MovieResponse
+
+    // https://api.themoviedb.org/3/movie/460465?api_key=baf62556ad57430e7e61c1ace8490114
+    @GET("movie/{id}$API_KEY")
+    suspend fun getMovieDetails(@Path("id") id:Int): Result
+
+
+
 }

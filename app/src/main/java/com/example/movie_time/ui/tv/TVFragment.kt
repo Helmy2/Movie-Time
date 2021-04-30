@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.movie_time.databinding.FragmentTvBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TVFragment : Fragment() {
 
     private val viewModel: TVViewModel by viewModels()

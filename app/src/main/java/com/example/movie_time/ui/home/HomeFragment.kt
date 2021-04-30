@@ -1,16 +1,21 @@
 package com.example.movie_time.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.movie_time.R
+import com.example.movie_time.api.MovieApi.Companion.MOVIE
+import com.example.movie_time.api.MovieApi.Companion.TV
 import com.example.movie_time.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -28,7 +33,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(layoutInflater)
-
         return binding.root
     }
 
@@ -37,7 +41,6 @@ class HomeFragment : Fragment() {
 
         val headAdapter = HeadAdapter()
         val movieAdapter = MovieAdapter()
-        val movieAdapter2 = MovieAdapter()
 
         binding.apply {
             recyclerViewMovies.apply {
@@ -45,32 +48,43 @@ class HomeFragment : Fragment() {
                 layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
-
-            recyclerViewMovies2.apply {
-                adapter = movieAdapter2
-                layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            }
-
             recyclerViewHead.apply {
                 adapter = headAdapter
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             }
-        }
 
-        binding.buttonRefresh.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.refreshDelay()
+            chipMovie.setOnClickListener {
+                viewModel.getPopular(MOVIE)
             }
-            it.visibility = View.GONE
-            it.visibility = View.VISIBLE
+            chipTV.setOnClickListener {
+                viewModel.getPopular(TV)
+            }
         }
 
-        viewModel.headListData.observe(viewLifecycleOwner) {
-            headAdapter.submitList(it)
-            movieAdapter.submitList(it)
-            movieAdapter2.submitList(it)
+        viewModel.apply {
+            headListData.observe(viewLifecycleOwner) {
+                headAdapter.submitList(it)
+            }
+            popularListData.observe(viewLifecycleOwner) {
+                movieAdapter.submitList(it)
+            }
+
+            popularType.observe(viewLifecycleOwner) {
+                binding.apply {
+                    when (it) {
+                        MOVIE -> {
+                            chipMovie.isChecked = true
+                            chipTV.isChecked = false
+                        }
+                        TV -> {
+                            chipTV.isChecked = true
+                            chipMovie.isChecked = false
+                        }
+                    }
+                }
+            }
+
         }
 
         internetErrorHandling()
@@ -83,7 +97,7 @@ class HomeFragment : Fragment() {
                     buttonRefresh.visibility = View.VISIBLE
                     progressBar.visibility = View.GONE
                     textViewPopular.visibility = View.GONE
-                    textViewPopular2.visibility = View.GONE
+                    constraintLayoutPopular.visibility = View.GONE
                 }
 
             } else {
@@ -91,10 +105,19 @@ class HomeFragment : Fragment() {
                     buttonRefresh.visibility = View.GONE
                     progressBar.visibility = View.GONE
                     textViewPopular.visibility = View.VISIBLE
-                    textViewPopular2.visibility = View.VISIBLE
+                    constraintLayoutPopular.visibility = View.VISIBLE
                 }
             }
+        }
+
+        binding.buttonRefresh.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.refreshDelay()
+            }
+            it.visibility = View.GONE
+            it.visibility = View.VISIBLE
         }
     }
 
 }
+
