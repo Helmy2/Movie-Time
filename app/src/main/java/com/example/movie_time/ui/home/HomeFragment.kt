@@ -1,17 +1,13 @@
 package com.example.movie_time.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.movie_time.R
 import com.example.movie_time.api.MovieApi.Companion.MOVIE
 import com.example.movie_time.api.MovieApi.Companion.TV
 import com.example.movie_time.databinding.FragmentHomeBinding
@@ -40,17 +36,17 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val headAdapter = HeadAdapter()
-        val movieAdapter = MovieAdapter()
+        val trendingAdapter = MovieAdapter()
+        val popularAdapter = MovieAdapter()
 
         binding.apply {
             recyclerViewMovies.apply {
-                adapter = movieAdapter
+                adapter = popularAdapter
                 layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
             recyclerViewHead.apply {
-                adapter = headAdapter
+                adapter = trendingAdapter
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             }
@@ -64,11 +60,11 @@ class HomeFragment : Fragment() {
         }
 
         viewModel.apply {
-            headListData.observe(viewLifecycleOwner) {
-                headAdapter.submitList(it)
+            trendingListData.observe(viewLifecycleOwner) {
+                trendingAdapter.submitList(it)
             }
             popularListData.observe(viewLifecycleOwner) {
-                movieAdapter.submitList(it)
+                popularAdapter.submitList(it)
             }
 
             popularType.observe(viewLifecycleOwner) {
@@ -97,26 +93,23 @@ class HomeFragment : Fragment() {
                 binding.apply {
                     buttonRefresh.visibility = View.VISIBLE
                     progressBar.visibility = View.GONE
-                    textViewPopular.visibility = View.GONE
-                    constraintLayoutPopular.visibility = View.GONE
+                    constraintLayout.visibility = View.GONE
                 }
 
             } else {
                 binding.apply {
                     buttonRefresh.visibility = View.GONE
                     progressBar.visibility = View.GONE
-                    textViewPopular.visibility = View.VISIBLE
-                    constraintLayoutPopular.visibility = View.VISIBLE
+                    constraintLayout.visibility = View.VISIBLE
                 }
             }
         }
-
         binding.buttonRefresh.setOnClickListener {
             lifecycleScope.launch {
                 viewModel.refreshDelay()
             }
             it.visibility = View.GONE
-            it.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.VISIBLE
         }
     }
 

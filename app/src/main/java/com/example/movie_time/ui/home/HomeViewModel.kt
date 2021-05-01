@@ -16,10 +16,9 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val repository = movieRepository
-
-    private val _headListData = MutableLiveData<List<Result>>()
-    val headListData: LiveData<List<Result>>
-        get() = _headListData
+    private val _trendingListData = MutableLiveData<List<Result>>()
+    val trendingListData: LiveData<List<Result>>
+        get() = _trendingListData
 
     private val _popularListData = MutableLiveData<List<Result>>()
     val popularListData: LiveData<List<Result>>
@@ -35,7 +34,7 @@ class HomeViewModel @Inject constructor(
         get() = _popularType
 
     init {
-        if (headListData.value == null) {
+        if (trendingListData.value == null) {
             refresh()
         }
         _popularType.value = MOVIE
@@ -77,7 +76,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             val movieResponse = repository.getTrending()
             _error.value = movieResponse.error?.localizedMessage
-            _headListData.value = movieResponse.data?.results
+            _trendingListData.value = movieResponse.data?.results
         }
     }
 
