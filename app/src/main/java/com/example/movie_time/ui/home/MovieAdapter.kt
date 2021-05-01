@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.movie_time.R
 import com.example.movie_time.api.MovieApi
+import com.example.movie_time.api.MovieApi.Companion.MOVIE
 import com.example.movie_time.data.Result
 import com.example.movie_time.databinding.ItemMovieBinding
 
@@ -33,12 +34,14 @@ class MovieAdapter() :
         fun bind(result: Result) {
             binding.apply {
 
-                if (result.title != null)
+                if (result.type == MOVIE) {
                     textView.text = result.title
-                else
+                    textViewReleaseDate.text = result.releaseDate
+                } else {
                     textView.text = result.name
+                    textViewReleaseDate.text = result.firstAirDate
+                }
 
-                textViewReleaseDate.text = result.releaseDate
                 textViewVote.text = result.voteAverage.toString()
                 Glide.with(itemView)
                     .load(
@@ -51,9 +54,11 @@ class MovieAdapter() :
                     .into(imageView)
 
                 root.setOnClickListener {
-                    val action =
-                        HomeFragmentDirections.actionNavigationHomeToDetailsFragment2(result.id)
-                    it.findNavController().navigate(action)
+                    if (result.type == MOVIE) {
+                        val action =
+                            HomeFragmentDirections.actionNavigationHomeToMovieDetailsFragment(result.id)
+                        it.findNavController().navigate(action)
+                    }
                 }
             }
         }

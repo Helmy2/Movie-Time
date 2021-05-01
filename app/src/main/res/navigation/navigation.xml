@@ -11,8 +11,8 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_navigation_home_to_detailsFragment2"
-            app:destination="@id/detailsFragment2" />
+            android:id="@+id/action_navigation_home_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
     </fragment>
 
     <fragment
@@ -27,10 +27,10 @@
         android:label="@string/title_tv"
         tools:layout="@layout/fragment_tv" />
     <fragment
-        android:id="@+id/detailsFragment2"
-        android:name="com.example.movie_time.ui.details.DetailsFragment"
-        android:label="fragment_details"
-        tools:layout="@layout/fragment_details" >
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.example.movie_time.ui.details.MovieDetailsFragment"
+        android:label="fragment_movie_details"
+        tools:layout="@layout/fragment_movie_details" >
         <argument
             android:name="id"
             app:argType="integer" />

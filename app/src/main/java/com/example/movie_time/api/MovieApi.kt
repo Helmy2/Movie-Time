@@ -3,6 +3,8 @@ package com.example.movie_time.api
 
 import com.example.movie_time.data.MovieResponse
 import com.example.movie_time.data.Result
+import com.example.movie_time.data.TV
+import com.example.movie_time.data.movie.Movie
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -33,10 +35,10 @@ interface MovieApi {
     @GET("tv/popular$API_KEY")
     suspend fun getPopularTV(): MovieResponse
 
-    // https://api.themoviedb.org/3/movie/460465?api_key=baf62556ad57430e7e61c1ace8490114
     @GET("movie/{id}$API_KEY")
-    suspend fun getMovieDetails(@Path("id") id:Int): Result
+    suspend fun getMovieDetails(@Path("id") id:Int): Movie
 
-
+    @GET("tv/{id}$API_KEY")
+    suspend fun getTVDetails(@Path("id") id:Int): TV
 
 }

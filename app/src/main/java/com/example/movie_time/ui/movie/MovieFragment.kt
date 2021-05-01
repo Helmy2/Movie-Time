@@ -38,11 +38,24 @@ class MovieFragment : Fragment() {
         val youTubePlayerView: YouTubePlayerView = binding.youtubePlayerView
         lifecycle.addObserver(youTubePlayerView)
 
+        val container = youTubePlayerView.getPlayerUiController()
+
+//        container.showBufferingProgress(false)
+//        container.showCurrentTime(false)
+//        container.showCustomAction1(false)
+//        container.showCustomAction2(false)
+//        container.showDuration(false)
+//        container.showFullscreenButton(false)
+//        container.showMenuButton(false)
+//        container.showSeekBar(false)
+//        container.showVideoTitle(false)
+//        container.showYouTubeButton(false)
+
+
         youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
-                val videoId = "IXFxXY1-fBY"
+                val videoId = "jBa_aHwCbC4"
                 youTubePlayer.loadVideo(videoId, 0f)
-                youTubePlayer.pause()
             }
         })
 

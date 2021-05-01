@@ -10,10 +10,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.movie_time.R
 import com.example.movie_time.api.MovieApi
+import com.example.movie_time.api.MovieApi.Companion.MOVIE
 import com.example.movie_time.data.Result
 import com.example.movie_time.databinding.ItemHeadBinding
 
-class HeadAdapter:
+class HeadAdapter :
     ListAdapter<Result, HeadAdapter.HeadViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeadViewHolder {
@@ -33,12 +34,14 @@ class HeadAdapter:
         fun bind(result: Result) {
             binding.apply {
 
-                if (result.title != null)
+                if (result.type == MOVIE) {
                     textViewTitle.text = result.title
-                else
+                    textViewReleaseDate.text = result.releaseDate
+                } else {
                     textViewTitle.text = result.name
+                    textViewReleaseDate.text = result.firstAirDate
+                }
 
-                textViewReleaseDate.text = result.releaseDate
                 Glide.with(itemView)
                     .load(
                         MovieApi.IMAGE_URL +
@@ -60,9 +63,11 @@ class HeadAdapter:
                     .into(imageViewBackdrop)
 
                 root.setOnClickListener {
-                    val action =
-                        HomeFragmentDirections.actionNavigationHomeToDetailsFragment2(result.id)
-                    it.findNavController().navigate(action)
+                    if (result.type == MOVIE) {
+                        val action =
+                            HomeFragmentDirections.actionNavigationHomeToMovieDetailsFragment(result.id)
+                        it.findNavController().navigate(action)
+                    }
                 }
             }
         }
