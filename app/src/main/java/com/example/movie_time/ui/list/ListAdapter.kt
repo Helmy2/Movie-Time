@@ -1,4 +1,4 @@
-package com.example.movie_time.ui.home
+package com.example.movie_time.ui.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,23 +12,23 @@ import com.example.movie_time.R
 import com.example.movie_time.api.MovieApi
 import com.example.movie_time.api.MovieApi.Companion.MOVIE
 import com.example.movie_time.data.Result
-import com.example.movie_time.databinding.ItemMovieBinding
+import com.example.movie_time.databinding.ItemListBinding
 
-class MovieAdapter() :
-    ListAdapter<Result, MovieAdapter.MovieViewHolder>(DiffCallback()) {
+class ListAdapter() :
+    ListAdapter<Result, com.example.movie_time.ui.list.ListAdapter.ListViewHolder>(DiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val binding =
-            ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MovieViewHolder(binding)
+            ItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ListViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.bind(currentItem)
     }
 
-    class MovieViewHolder(private val binding: ItemMovieBinding) :
+    class ListViewHolder(private val binding: ItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(result: Result) {
@@ -56,20 +56,13 @@ class MovieAdapter() :
                 root.setOnClickListener {
                     if (result.type == MOVIE) {
                         val action =
-                            HomeFragmentDirections.actionNavigationHomeToMovieDetailsFragment(
-                                result.id,
-                                result.title
-                            )
+                            ListFragmentDirections.actionListFragmentToMovieDetailsFragment(result.id,result.title)
                         it.findNavController().navigate(action)
-                    } else {
+                    }else{
                         val action =
-                            HomeFragmentDirections.actionNavigationHomeToTVDetailsFragment2(
-                                result.id,
-                                result.name
-                            )
+                            ListFragmentDirections.actionListFragmentToTVDetailsFragment2(result.id,result.name)
                         it.findNavController().navigate(action)
                     }
-
                 }
             }
         }

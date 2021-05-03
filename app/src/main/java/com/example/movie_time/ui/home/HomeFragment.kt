@@ -1,6 +1,7 @@
 package com.example.movie_time.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
+import com.example.movie_time.api.MovieApi.Companion.DAY
 import com.example.movie_time.api.MovieApi.Companion.MOVIE
 import com.example.movie_time.api.MovieApi.Companion.TV
+import com.example.movie_time.api.MovieApi.Companion.WEEK
 import com.example.movie_time.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -29,7 +33,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(layoutInflater)
-
         return binding.root
     }
 
@@ -38,6 +41,7 @@ class HomeFragment : Fragment() {
 
         val trendingAdapter = MovieAdapter()
         val popularAdapter = MovieAdapter()
+        val headAdapter = HeadAdapter()
 
         binding.apply {
             recyclerViewMovies.apply {
@@ -50,13 +54,27 @@ class HomeFragment : Fragment() {
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             }
-
-            chipMovie.setOnClickListener {
+            viewPager.adapter = headAdapter
+            chipPopularMovie.setOnClickListener {
                 viewModel.getPopular(MOVIE)
             }
-            chipTV.setOnClickListener {
+            chipPopularTV.setOnClickListener {
                 viewModel.getPopular(TV)
             }
+
+            chipTrendingToday.setOnClickListener {
+                viewModel.getTrending(DAY)
+            }
+            chipTrendingThisWeek.setOnClickListener {
+                viewModel.getTrending(WEEK)
+            }
+
+            viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    viewModel.pagePosition(position)
+                }
+            })
         }
 
         viewModel.apply {
@@ -67,20 +85,45 @@ class HomeFragment : Fragment() {
                 popularAdapter.submitList(it)
             }
 
+            trendingListData.observe(viewLifecycleOwner) {
+                headAdapter.submitList(it)
+            }
+
+            counter.observe(viewLifecycleOwner) {
+                binding.viewPager.setCurrentItem(it, true)
+                pageSwitcher()
+            }
+
             popularType.observe(viewLifecycleOwner) {
                 binding.apply {
                     when (it) {
                         MOVIE -> {
-                            chipMovie.isChecked = true
-                            chipTV.isChecked = false
+                            chipPopularMovie.isChecked = true
+                            chipPopularTV.isChecked = false
                         }
                         TV -> {
-                            chipTV.isChecked = true
-                            chipMovie.isChecked = false
+                            chipPopularTV.isChecked = true
+                            chipPopularMovie.isChecked = false
                         }
                     }
                 }
             }
+
+            trendingType.observe(viewLifecycleOwner) {
+                binding.apply {
+                    when (it) {
+                        DAY -> {
+                            chipTrendingToday.isChecked = true
+                            chipTrendingThisWeek.isChecked = false
+                        }
+                        WEEK -> {
+                            chipTrendingThisWeek.isChecked = true
+                            chipTrendingToday.isChecked = false
+                        }
+                    }
+                }
+            }
+
 
         }
 

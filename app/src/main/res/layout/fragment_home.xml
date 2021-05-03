@@ -19,12 +19,23 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView2"
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="50dp"
-                app:layout_constraintTop_toTopOf="parent">
+                tools:layout_height="300dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewSimilar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="5dp"
+                app:layout_constraintTop_toBottomOf="@+id/viewPager">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayoutTrending"
@@ -43,13 +54,40 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTrendingToday"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Today"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="@+id/textViewTrending"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewTrending" />
+
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTrendingThisWeek"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="This Week"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/chipTrendingToday"
+                        app:layout_constraintStart_toEndOf="@+id/chipTrendingToday"
+                        app:layout_constraintTop_toTopOf="@+id/chipTrendingToday" />
+
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_head"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textViewTrending"
+                        app:layout_constraintTop_toBottomOf="@+id/chipTrendingToday"
                         tools:itemCount="1"
                         tools:listitem="@layout/item_movie" />
 
@@ -61,8 +99,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:cardElevation="50dp"
-                app:layout_constraintTop_toBottomOf="@+id/cardView2">
+                app:cardElevation="5dp"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewSimilar">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayoutPopular"
@@ -71,7 +109,7 @@
 
 
                     <com.google.android.material.chip.Chip
-                        android:id="@+id/chipMovie"
+                        android:id="@+id/chipPopularMovie"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -84,7 +122,7 @@
 
 
                     <com.google.android.material.chip.Chip
-                        android:id="@+id/chipTV"
+                        android:id="@+id/chipPopularTV"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -92,9 +130,9 @@
                         android:text="@string/tv_series"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/chipMovie"
-                        app:layout_constraintStart_toEndOf="@+id/chipMovie"
-                        app:layout_constraintTop_toTopOf="@+id/chipMovie" />
+                        app:layout_constraintBottom_toBottomOf="@+id/chipPopularMovie"
+                        app:layout_constraintStart_toEndOf="@+id/chipPopularMovie"
+                        app:layout_constraintTop_toTopOf="@+id/chipPopularMovie" />
 
                     <TextView
                         android:id="@+id/textViewPopular"
@@ -116,7 +154,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/chipMovie"
+                        app:layout_constraintTop_toBottomOf="@+id/chipPopularMovie"
                         tools:itemCount="1"
                         tools:listitem="@layout/item_movie" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

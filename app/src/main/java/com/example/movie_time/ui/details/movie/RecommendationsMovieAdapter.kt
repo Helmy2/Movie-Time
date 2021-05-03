@@ -1,4 +1,4 @@
-package com.example.movie_time.ui.home
+package com.example.movie_time.ui.details.movie
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,12 +10,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.movie_time.R
 import com.example.movie_time.api.MovieApi
-import com.example.movie_time.api.MovieApi.Companion.MOVIE
 import com.example.movie_time.data.Result
 import com.example.movie_time.databinding.ItemMovieBinding
 
-class MovieAdapter() :
-    ListAdapter<Result, MovieAdapter.MovieViewHolder>(DiffCallback()) {
+class RecommendationsMovieAdapter() :
+    ListAdapter<Result, RecommendationsMovieAdapter.MovieViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val binding =
@@ -34,7 +33,7 @@ class MovieAdapter() :
         fun bind(result: Result) {
             binding.apply {
 
-                if (result.type == MOVIE) {
+                if (result.type == MovieApi.MOVIE) {
                     textView.text = result.title
                     textViewReleaseDate.text = result.releaseDate
                 } else {
@@ -42,7 +41,7 @@ class MovieAdapter() :
                     textViewReleaseDate.text = result.firstAirDate
                 }
 
-                textViewVote.text = result.voteAverage.toString()
+                textViewVote.text = String.format("%.1f", result.voteAverage)
                 Glide.with(itemView)
                     .load(
                         MovieApi.IMAGE_URL +
@@ -54,22 +53,12 @@ class MovieAdapter() :
                     .into(imageView)
 
                 root.setOnClickListener {
-                    if (result.type == MOVIE) {
-                        val action =
-                            HomeFragmentDirections.actionNavigationHomeToMovieDetailsFragment(
-                                result.id,
-                                result.title
-                            )
-                        it.findNavController().navigate(action)
-                    } else {
-                        val action =
-                            HomeFragmentDirections.actionNavigationHomeToTVDetailsFragment2(
-                                result.id,
-                                result.name
-                            )
-                        it.findNavController().navigate(action)
-                    }
-
+                    val action =
+                        MovieDetailsFragmentDirections.actionMovieDetailsFragmentSelf(
+                            result.id,
+                            result.title
+                        )
+                    it.findNavController().navigate(action)
                 }
             }
         }
