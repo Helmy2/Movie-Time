@@ -27,7 +27,8 @@
                 android:layout_width="170dp"
                 android:layout_height="210dp"
                 android:scaleType="centerCrop"
-                tools:background="@color/black" />
+                tools:srcCompat="@drawable/ic_placeholder_photo"
+                 />
 
         </androidx.cardview.widget.CardView>
 

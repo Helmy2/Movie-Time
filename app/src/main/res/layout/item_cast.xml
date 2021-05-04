@@ -19,7 +19,7 @@
             android:layout_height="116dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/ic_user" />
+            tools:srcCompat="@drawable/ic_placeholder_user" />
 
         <TextView
             android:id="@+id/textViewName"

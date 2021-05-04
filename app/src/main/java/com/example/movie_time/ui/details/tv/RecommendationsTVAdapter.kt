@@ -12,7 +12,6 @@ import com.example.movie_time.R
 import com.example.movie_time.api.MovieApi
 import com.example.movie_time.data.Result
 import com.example.movie_time.databinding.ItemMovieBinding
-import com.example.movie_time.ui.details.movie.MovieDetailsFragmentDirections
 
 class RecommendationsTVAdapter() :
     ListAdapter<Result, RecommendationsTVAdapter.MovieViewHolder>(DiffCallback()) {
@@ -50,7 +49,7 @@ class RecommendationsTVAdapter() :
                     )
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .error(R.drawable.ic_error)
+                    .error(R.drawable.ic_placeholder_photo)
                     .into(imageView)
 
                 root.setOnClickListener {

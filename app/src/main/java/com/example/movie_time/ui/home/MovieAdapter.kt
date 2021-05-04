@@ -50,7 +50,7 @@ class MovieAdapter() :
                     )
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .error(R.drawable.ic_error)
+                    .error(R.drawable.ic_placeholder_photo)
                     .into(imageView)
 
                 root.setOnClickListener {

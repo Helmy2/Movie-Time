@@ -46,17 +46,17 @@ class HeadAdapter :
                     )
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .error(R.drawable.ic_error)
+                    .error(R.drawable.ic_placeholder_background)
                     .into(imageViewPoster)
 
                 Glide.with(itemView)
                     .load(
-                        MovieApi.IMAGE_URL +
+                        MovieApi.IMAGE_URL_ORIGINAL +
                                 result.backdropPath
                     )
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .error(R.drawable.ic_error)
+                    .error(R.drawable.ic_placeholder_background)
                     .into(imageViewBackdrop)
 
                 root.setOnClickListener {

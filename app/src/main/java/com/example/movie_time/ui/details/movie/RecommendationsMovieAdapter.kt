@@ -14,20 +14,20 @@ import com.example.movie_time.data.Result
 import com.example.movie_time.databinding.ItemMovieBinding
 
 class RecommendationsMovieAdapter() :
-    ListAdapter<Result, RecommendationsMovieAdapter.MovieViewHolder>(DiffCallback()) {
+    ListAdapter<Result, RecommendationsMovieAdapter.RecommendationsMovieViewHolder>(DiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecommendationsMovieViewHolder {
         val binding =
             ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MovieViewHolder(binding)
+        return RecommendationsMovieViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecommendationsMovieViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.bind(currentItem)
     }
 
-    class MovieViewHolder(private val binding: ItemMovieBinding) :
+    class RecommendationsMovieViewHolder(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(result: Result) {
@@ -49,7 +49,7 @@ class RecommendationsMovieAdapter() :
                     )
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .error(R.drawable.ic_error)
+                    .error(R.drawable.ic_placeholder_photo)
                     .into(imageView)
 
                 root.setOnClickListener {

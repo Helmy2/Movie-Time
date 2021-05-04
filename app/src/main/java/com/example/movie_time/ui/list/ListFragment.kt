@@ -1,14 +1,19 @@
 package com.example.movie_time.ui.list
 
+import android.annotation.SuppressLint
+import android.net.ConnectivityManager
+import android.net.Network
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.example.movie_time.databinding.FragmentListBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ListFragment : Fragment() {
@@ -43,7 +48,22 @@ class ListFragment : Fragment() {
         viewModel.listData.observe(viewLifecycleOwner) {
             listAdapter.submitList(it)
         }
-
+        internetErrorHandling()
     }
 
+    @SuppressLint("NewApi")
+    private fun internetErrorHandling() {
+
+        val connectivityManager = requireActivity().getSystemService(ConnectivityManager::class.java)
+
+        connectivityManager.registerDefaultNetworkCallback(object :
+            ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                viewModel.refresh(args.id,args.type)
+            }
+            override fun onLost(network: Network) {
+
+            }
+        })
+    }
 }

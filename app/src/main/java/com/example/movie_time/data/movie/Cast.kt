@@ -9,10 +9,7 @@ data class Cast(
     @SerializedName("credit_id")
     val creditId: String,
     val id: Int,
-    @SerializedName("known_for_department")
-    val knownForDepartment: String,
     val name: String,
-    val order: Int,
     @SerializedName("profile_path")
     val profilePath: String
 )

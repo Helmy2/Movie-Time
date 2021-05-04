@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movie_time.data.MovieRepository
+import com.example.movie_time.data.Repository
 import com.example.movie_time.data.Result
 import com.example.movie_time.data.TV
 import com.example.movie_time.data.movie.Cast
@@ -15,10 +15,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TVDetailsViewModel @Inject constructor(
-    movieRepository: MovieRepository
+    Repository: Repository
 ) : ViewModel() {
 
-    private val repository = movieRepository
+    private val repository = Repository
 
     private val _detailsData = MutableLiveData<TV>()
     val detailsData: LiveData<TV>
@@ -37,7 +37,7 @@ class TVDetailsViewModel @Inject constructor(
         get() = _error
 
 
-    fun refresh(id :Int){
+    fun refresh(id: Int) {
         getTVDetails(id)
         getTVCast(id)
         getTVRecommendations(id)

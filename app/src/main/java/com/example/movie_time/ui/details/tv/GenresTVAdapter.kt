@@ -11,20 +11,20 @@ import com.example.movie_time.data.movie.Genre
 import com.example.movie_time.databinding.ItemGenresBinding
 
 class GenresTVAdapter :
-    ListAdapter<Genre, GenresTVAdapter.MovieViewHolder>(DiffCallback()) {
+    ListAdapter<Genre, GenresTVAdapter.GenresTVViewHolder>(DiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenresTVViewHolder {
         val binding =
             ItemGenresBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MovieViewHolder(binding)
+        return GenresTVViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GenresTVViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.bind(currentItem)
     }
 
-    class MovieViewHolder(private val binding: ItemGenresBinding) :
+    class GenresTVViewHolder(private val binding: ItemGenresBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(genre: Genre) {

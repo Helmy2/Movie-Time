@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.movie_time.api.MovieApi.Companion.CREDITS
 import com.example.movie_time.api.MovieApi.Companion.MOVIE
 import com.example.movie_time.api.MovieApi.Companion.TV
-import com.example.movie_time.data.MovieRepository
+import com.example.movie_time.data.Repository
 import com.example.movie_time.data.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,10 +16,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
-    movieRepository: MovieRepository
+    Repository: Repository
 ) : ViewModel() {
 
-    private val repository = movieRepository
+    private val repository = Repository
 
     private val _listData = MutableLiveData<List<Result>>()
     val listData: LiveData<List<Result>>

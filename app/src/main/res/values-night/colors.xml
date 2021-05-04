@@ -5,9 +5,7 @@
     <color name="primaryColor">#d6182a</color>
     <color name="primaryLightColor">#ff5954</color>
     <color name="primaryDarkColor">#9c0001</color>
-    <color name="secondaryColor">#d6182a</color>
-    <color name="secondaryLightColor">#ff5954</color>
-    <color name="secondaryDarkColor">#9c0001</color>
+
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
 

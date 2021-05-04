@@ -1,7 +1,7 @@
 package com.example.movie_time.data
 
 
-data class MovieResponse(
+data class ResultResponse(
     val results: MutableList<Result>,
     val page: Int,
 )

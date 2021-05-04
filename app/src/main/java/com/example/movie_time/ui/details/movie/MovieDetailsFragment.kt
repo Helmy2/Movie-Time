@@ -1,5 +1,8 @@
 package com.example.movie_time.ui.details.movie
 
+import android.annotation.SuppressLint
+import android.net.ConnectivityManager
+import android.net.Network
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,9 +33,7 @@ class MovieDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentMovieDetailsBinding.inflate(layoutInflater)
-
         return binding.root
     }
 
@@ -74,52 +75,58 @@ class MovieDetailsFragment : Fragment() {
                 if (it.isNotEmpty())
                     binding.cardViewSimilar.visibility = View.VISIBLE
             }
-        }
+            detailsData.observe(viewLifecycleOwner) {
+                binding.apply {
+                    constraintLayout.visibility = View.VISIBLE
+                    genresAdapter.submitList(it.genres)
 
-        viewModel.detailsData.observe(viewLifecycleOwner) {
-            binding.apply {
-                genresAdapter.submitList(it.genres)
-                textViewOverview.text = it.overview
-                textViewTitle.text = it.title
-                textViewVote.text = it.voteAverage.toString()
+                    textViewOverview.text = it.overview
+                    textViewTitle.text = it.title
+                    textViewVote.text = it.voteAverage.toString()
 
-                Glide.with(this@MovieDetailsFragment)
-                    .load(
-                        MovieApi.IMAGE_URL +
-                                it.posterPath
-                    )
-                    .centerCrop()
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .error(R.drawable.ic_error)
-                    .into(imageViewPoster)
+                    Glide.with(this@MovieDetailsFragment)
+                        .load(
+                            MovieApi.IMAGE_URL +
+                                    it.posterPath
+                        )
+                        .centerCrop()
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .error(R.drawable.ic_placeholder_photo)
+                        .into(imageViewPoster)
 
-                Glide.with(this@MovieDetailsFragment)
-                    .load(
-                        MovieApi.IMAGE_URL_ORIGINAL +
-                                it.backdropPath
-                    )
-                    .centerCrop()
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .error(R.drawable.ic_error)
-                    .into(imageViewBackdrop)
+                    Glide.with(this@MovieDetailsFragment)
+                        .load(
+                            MovieApi.IMAGE_URL_ORIGINAL +
+                                    it.backdropPath
+                        )
+                        .centerCrop()
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .error(R.drawable.ic_placeholder_background)
+                        .into(imageViewBackdrop)
 
+                }
             }
+
         }
+
         internetErrorHandling()
     }
 
+    @SuppressLint("NewApi")
     private fun internetErrorHandling() {
-        viewModel.error.observe(viewLifecycleOwner) {
-            if (it != null) {
-                binding.apply {
-                    constraintLayout.visibility = View.GONE
-                }
-            } else {
-                binding.apply {
-                    constraintLayout.visibility = View.VISIBLE
-                }
+        val connectivityManager =
+            requireActivity().getSystemService(ConnectivityManager::class.java)
+
+        connectivityManager.registerDefaultNetworkCallback(object :
+            ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                viewModel.refresh(args.id)
             }
-        }
+
+            override fun onLost(network: Network) {
+
+            }
+        })
     }
 
 }

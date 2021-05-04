@@ -15,20 +15,20 @@ import com.example.movie_time.data.movie.Cast
 import com.example.movie_time.databinding.ItemCastBinding
 
 class CastTVAdapter :
-    ListAdapter<Cast, CastTVAdapter.MovieViewHolder>(DiffCallback()) {
+    ListAdapter<Cast, CastTVAdapter.CastTVViewHolder>(DiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastTVViewHolder {
         val binding =
             ItemCastBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MovieViewHolder(binding)
+        return CastTVViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CastTVViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.bind(currentItem)
     }
 
-    class MovieViewHolder(private val binding: ItemCastBinding) :
+    class CastTVViewHolder(private val binding: ItemCastBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(cast: Cast) {
@@ -42,7 +42,7 @@ class CastTVAdapter :
                     )
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .error(R.drawable.ic_user)
+                    .error(R.drawable.ic_placeholder_user)
                     .into(imageView)
 
                 root.setOnClickListener {
