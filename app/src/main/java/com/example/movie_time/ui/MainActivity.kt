@@ -1,20 +1,16 @@
 package com.example.movie_time.ui
 
-import android.annotation.SuppressLint
-import android.net.ConnectivityManager
-import android.net.Network
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.movie_time.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -28,35 +24,43 @@ class MainActivity : AppCompatActivity() {
 
         navController = findNavController(R.id.nav_host_fragment)
 
+        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_movie, R.id.navigation_tv
             )
         )
+
+        toolbar.setupWithNavController(navController, appBarConfiguration)
+
         navView.setupWithNavController(navController)
-        setupActionBarWithNavController(navController, appBarConfiguration)
 
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.navigation_home -> {
                     navView.visibility = View.VISIBLE
-                    supportActionBar?.hide()
+                    toolbar.visibility = View.GONE
                 }
                 R.id.navigation_movie -> {
                     navView.visibility = View.VISIBLE
-                    supportActionBar?.hide()
+                    toolbar.visibility = View.GONE
                 }
                 R.id.navigation_tv -> {
                     navView.visibility = View.VISIBLE
-                    supportActionBar?.hide()
+                    toolbar.visibility = View.GONE
                 }
                 else -> {
                     navView.visibility = View.GONE
-                    supportActionBar?.show()
+                    toolbar.visibility = View.VISIBLE
                 }
             }
         }
+
+
+
 
     }
 
@@ -64,4 +68,27 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() ||
                 super.onSupportNavigateUp()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+//        lifecycleScope.launch {
+//            withContext(Dispatchers.IO) {
+//                try {
+//                    Glide.get(applicationContext).clearDiskCache()
+//                } catch (e: Exception) {
+//                    Log.i("TAG", "1: ${e.toString()}")
+//                }
+//            }
+//        }
+//        lifecycleScope.launch {
+//            try {
+//                Glide.get(applicationContext).clearMemory()
+//            } catch (e: Exception) {
+//                Log.i("TAG", "2: ${e.toString()}")
+//            }
+//        }
+    }
 }
+
+
+

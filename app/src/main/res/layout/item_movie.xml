@@ -25,10 +25,10 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="133dp"
+                android:layout_width="130dp"
                 android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                tools:background="@color/black" />
+                android:scaleType="center"
+                tools:src="@drawable/ic_placeholder_photo" />
 
         </androidx.cardview.widget.CardView>
 

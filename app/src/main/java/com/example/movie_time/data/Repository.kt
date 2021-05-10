@@ -1,9 +1,13 @@
 package com.example.movie_time.data
 
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.liveData
 import com.example.movie_time.api.MovieApi
 import com.example.movie_time.api.MovieApi.Companion.MOVIE
 import com.example.movie_time.api.MovieApi.Companion.TV
+import com.example.movie_time.ui.list.listPagingSource
 import com.example.movie_time.util.Resource
 import javax.inject.Inject
 
@@ -68,22 +72,6 @@ class Repository @Inject constructor(
         Resource.Error(e)
     }
 
-    suspend fun getMovieGenre(id: Int) = try {
-        val data = api.getMovieGenre(id)
-        data.results.map { it.type = MOVIE }
-        Resource.Success(data)
-    } catch (e: Exception) {
-        Resource.Error(e)
-    }
-
-    suspend fun getTVGenre(id: Int) = try {
-        val data = api.getTVGenre(id)
-        data.results.map { it.type = TV }
-        Resource.Success(data)
-    } catch (e: Exception) {
-        Resource.Error(e)
-    }
-
     suspend fun getTVDetails(id: Int) = try {
         val data = api.getTVDetails(id)
         Resource.Success(data)
@@ -106,21 +94,15 @@ class Repository @Inject constructor(
         Resource.Error(e)
     }
 
-    suspend fun getCredits(id: Int) = try {
-        val dataMovie = api.getMovieCredits(id)
-        dataMovie.results.map { it.type = MOVIE }
 
-        val dataTV = api.getTVCredits(id)
-        dataTV.cast.map { it.type = TV }
-
-        val list: MutableList<Result> = mutableListOf()
-        list.addAll(dataMovie.results)
-        list.addAll(dataTV.cast.filter { it.voteAverage > 0 })
-        list.sortByDescending { it.voteAverage }
-
-        Resource.Success(list)
-    } catch (e: Exception) {
-        Resource.Error(e)
-    }
+    fun getListResults(id: Int, type: Int) =
+        Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                maxSize = 100,
+                enablePlaceholders = true
+            ),
+            pagingSourceFactory = { listPagingSource(api, id, type) }
+        ).liveData
 
 }

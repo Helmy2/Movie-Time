@@ -24,9 +24,9 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="170dp"
-                android:layout_height="210dp"
-                android:scaleType="centerCrop"
+                android:layout_width="150dp"
+                android:layout_height="230dp"
+                android:scaleType="center"
                 tools:srcCompat="@drawable/ic_placeholder_photo"
                  />
 

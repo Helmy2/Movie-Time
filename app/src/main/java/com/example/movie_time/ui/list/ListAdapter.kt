@@ -3,6 +3,7 @@ package com.example.movie_time.ui.list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,9 @@ import com.example.movie_time.data.Result
 import com.example.movie_time.databinding.ItemListBinding
 
 class ListAdapter() :
-    ListAdapter<Result, com.example.movie_time.ui.list.ListAdapter.ListViewHolder>(DiffCallback()) {
+    PagingDataAdapter<Result, com.example.movie_time.ui.list.ListAdapter.ListViewHolder>(
+        DiffCallback()
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val binding =
@@ -25,7 +28,9 @@ class ListAdapter() :
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val currentItem = getItem(position)
-        holder.bind(currentItem)
+        if (currentItem != null) {
+            holder.bind(currentItem)
+        }
     }
 
     class ListViewHolder(private val binding: ItemListBinding) :
@@ -55,11 +60,17 @@ class ListAdapter() :
                 root.setOnClickListener {
                     if (result.type == MOVIE) {
                         val action =
-                            ListFragmentDirections.actionListFragmentToMovieDetailsFragment(result.id,result.title)
+                            ListFragmentDirections.actionListFragmentToMovieDetailsFragment(
+                                result.id,
+                                result.title
+                            )
                         it.findNavController().navigate(action)
-                    }else{
+                    } else {
                         val action =
-                            ListFragmentDirections.actionListFragmentToTVDetailsFragment2(result.id,result.name)
+                            ListFragmentDirections.actionListFragmentToTVDetailsFragment2(
+                                result.id,
+                                result.name
+                            )
                         it.findNavController().navigate(action)
                     }
                 }

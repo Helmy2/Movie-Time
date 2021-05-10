@@ -34,9 +34,7 @@ class HomeViewModel @Inject constructor(
         get() = _counter
 
     init {
-        if (trendingListData.value == null) {
-            refresh()
-        }
+        refresh()
         _counter.value = 0
     }
 

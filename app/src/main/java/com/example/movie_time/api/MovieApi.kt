@@ -20,10 +20,9 @@ interface MovieApi {
         const val IMAGE_URL_ORIGINAL = "https://image.tmdb.org/t/p/original/"
         const val MOVIE = 1
         const val TV = 2
-        const val CREDITS = 2
+        const val CREDITS = 3
         const val DAY = "day"
         const val WEEK = "week"
-
     }
 
 
@@ -31,7 +30,7 @@ interface MovieApi {
     suspend fun getTopRatedMovies(@Query("page") page: Int = 1): ResultResponse
 
     @GET("discover/movie$API_KEY&sort_by=popularity.desc")
-    suspend fun getMovieGenre(@Query("with_genres") id: Int): ResultResponse
+    suspend fun getMovieGenre(@Query("with_genres") id: Int,@Query("page") page: Int): ResultResponse
 
     @GET("movie/popular$API_KEY")
     suspend fun getMoviesPopular(): ResultResponse
@@ -44,7 +43,6 @@ interface MovieApi {
 
     @GET("movie/{id}/recommendations$API_KEY")
     suspend fun getMovieRecommendations(@Path("id") id: Int): ResultResponse
-
 
     @GET("tv/{id}$API_KEY")
     suspend fun getTVDetails(@Path("id") id: Int): TV
@@ -59,15 +57,13 @@ interface MovieApi {
     suspend fun getTVRecommendations(@Path("id") id: Int): ResultResponse
 
     @GET("discover/tv$API_KEY&sort_by=popularity.desc")
-    suspend fun getTVGenre(@Query("with_genres") id: Int): ResultResponse
+    suspend fun getTVGenre(@Query("with_genres") id: Int,@Query("page") page: Int): ResultResponse
 
-
-
-    @GET("person/{id}//tv_credits$API_KEY")
+    @GET("person/{id}/tv_credits$API_KEY")
     suspend fun getTVCredits(@Path("id") id: Int): CreditResponse
 
-    @GET("discover/movie$API_KEY&sort_by=popularity.desc&vote_average.gte=1")
-    suspend fun getMovieCredits(@Query("with_people") id: Int): ResultResponse
+    @GET("person/{id}/movie_credits$API_KEY")
+    suspend fun getMovieCredits(@Path("id") id: Int): CreditResponse
 
     @GET("trending/all/{time_window}$API_KEY")
     suspend fun getTrending(@Path("time_window") timeWindow: String): ResultResponse

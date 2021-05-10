@@ -89,6 +89,9 @@ dependencies {
     // youTube Player
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:chromecast-sender:0.23'
+
+    // Paging 3
+    implementation "androidx.paging:paging-runtime-ktx:3.0.0"
 }
 
 kapt {
