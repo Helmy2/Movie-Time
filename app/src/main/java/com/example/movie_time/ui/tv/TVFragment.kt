@@ -69,7 +69,28 @@ class TVFragment : Fragment() {
 //            viewModel.pageSwitcher(it)
 //        }
 
-
+//        val youTubePlayerView = binding.youtubePlayerView
+//        lifecycle.addObserver(youTubePlayerView)
+//
+//        val container = youTubePlayerView.getPlayerUiController()
+//
+//        val videoId = "IXFxXY1-fBY"
+//
+//        youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+//            override fun onReady(youTubePlayer: YouTubePlayer) {
+//                youTubePlayer.loadVideo(videoId, 0f)
+//                youTubePlayer.pause()
+//            }
+//
+//            override fun onError(youTubePlayer: YouTubePlayer, error: PlayerConstants.PlayerError) {
+//                super.onError(youTubePlayer, error)
+//                Log.i("TAG", "onError: $error")
+//            }
+//
+//        })
+//        viewModel.searchListData.observe(viewLifecycleOwner) {
+//            binding.textView2.text = it.toString()
+//        }
     }
 
 

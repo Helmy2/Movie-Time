@@ -30,7 +30,10 @@ interface MovieApi {
     suspend fun getTopRatedMovies(@Query("page") page: Int = 1): ResultResponse
 
     @GET("discover/movie$API_KEY&sort_by=popularity.desc")
-    suspend fun getMovieGenre(@Query("with_genres") id: Int,@Query("page") page: Int): ResultResponse
+    suspend fun getMovieGenre(
+        @Query("with_genres") id: Int,
+        @Query("page") page: Int
+    ): ResultResponse
 
     @GET("movie/popular$API_KEY")
     suspend fun getMoviesPopular(): ResultResponse
@@ -57,7 +60,7 @@ interface MovieApi {
     suspend fun getTVRecommendations(@Path("id") id: Int): ResultResponse
 
     @GET("discover/tv$API_KEY&sort_by=popularity.desc")
-    suspend fun getTVGenre(@Query("with_genres") id: Int,@Query("page") page: Int): ResultResponse
+    suspend fun getTVGenre(@Query("with_genres") id: Int, @Query("page") page: Int): ResultResponse
 
     @GET("person/{id}/tv_credits$API_KEY")
     suspend fun getTVCredits(@Path("id") id: Int): CreditResponse
@@ -67,4 +70,8 @@ interface MovieApi {
 
     @GET("trending/all/{time_window}$API_KEY")
     suspend fun getTrending(@Path("time_window") timeWindow: String): ResultResponse
+
+    @GET("search/multi$API_KEY")
+    suspend fun getSearch(@Query("query") query: String): ResultResponse
+
 }

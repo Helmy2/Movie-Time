@@ -105,4 +105,17 @@ class Repository @Inject constructor(
             pagingSourceFactory = { listPagingSource(api, id, type) }
         ).liveData
 
+    suspend fun getSearch(query: String) = try {
+        val data = api.getSearch(query)
+        data.results.map {
+            if (it.mediaType == "movie")
+                it.type = MOVIE
+            else
+                it.type = TV
+        }
+        Resource.Success(data)
+    } catch (e: Exception) {
+        Resource.Error(e)
+    }
+
 }

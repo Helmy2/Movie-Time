@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Movie time</string>
     <string name="title_home">Home</string>
-    <string name="title_movie">Movie</string>
+    <string name="title_search">Search</string>
     <string name="title_tv">TV</string>
     <string name="popular">Popular</string>
     <string name="movie">Movie</string>
