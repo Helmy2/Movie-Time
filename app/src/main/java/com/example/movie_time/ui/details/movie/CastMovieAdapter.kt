@@ -34,6 +34,7 @@ class CastMovieAdapter :
         fun bind(cast: Cast) {
             binding.apply {
                 textViewName.text = cast.name
+                textViewCharacter.text = cast.character
 
                 Glide.with(itemView)
                     .load(

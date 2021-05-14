@@ -118,4 +118,19 @@ class Repository @Inject constructor(
         Resource.Error(e)
     }
 
+
+    suspend fun getMovieImages(id: Int) = try {
+        val data = api.getMovieImages(id)
+        Resource.Success(data)
+    } catch (e: Exception) {
+        Resource.Error(e)
+    }
+
+    suspend fun getTVImages(id: Int) = try {
+        val data = api.getTVImages(id)
+        Resource.Success(data)
+    } catch (e: Exception) {
+        Resource.Error(e)
+    }
+
 }

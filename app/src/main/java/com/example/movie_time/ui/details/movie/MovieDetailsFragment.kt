@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,11 +41,10 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.refresh(args.id)
-
         val genresAdapter = GenresMovieAdapter()
         val castAdapter = CastMovieAdapter()
         val recommendationsAdapter = RecommendationsMovieAdapter()
+        val imageAdapter = ImageAdapter()
 
         binding.apply {
             recyclerViewGenres.apply {
@@ -62,6 +62,11 @@ class MovieDetailsFragment : Fragment() {
                 layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
+            recyclerViewImage.apply {
+                adapter = imageAdapter
+                layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            }
         }
 
         viewModel.apply {
@@ -70,11 +75,19 @@ class MovieDetailsFragment : Fragment() {
                 if (it.isNotEmpty())
                     binding.cardViewFullCast.visibility = View.VISIBLE
             }
+
             recommendationsData.observe(viewLifecycleOwner) {
                 recommendationsAdapter.submitList(it)
                 if (it.isNotEmpty())
                     binding.cardViewSimilar.visibility = View.VISIBLE
             }
+
+            images.observe(viewLifecycleOwner) {
+                imageAdapter.submitList(it)
+                if (it.isNotEmpty())
+                    binding.cardViewImage.visibility = View.VISIBLE
+            }
+
             detailsData.observe(viewLifecycleOwner) {
                 binding.apply {
                     constraintLayout.visibility = View.VISIBLE

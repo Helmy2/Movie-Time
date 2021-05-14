@@ -11,6 +11,7 @@ data class Cast(
     val id: Int,
     val name: String,
     @SerializedName("profile_path")
-    val profilePath: String
+    val profilePath: String,
+    val character: String
 )
 

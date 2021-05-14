@@ -6,6 +6,7 @@ import com.example.movie_time.data.ResultResponse
 import com.example.movie_time.data.TV
 import com.example.movie_time.data.movie.CastResponse
 import com.example.movie_time.data.movie.Movie
+import com.example.movie_time.data.ImagesResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -73,5 +74,12 @@ interface MovieApi {
 
     @GET("search/multi$API_KEY")
     suspend fun getSearch(@Query("query") query: String): ResultResponse
+
+
+    @GET("movie/{id}/images$API_KEY")
+    suspend fun getMovieImages(@Path("id") id: Int): ImagesResponse
+
+    @GET("tv/{id}/images$API_KEY")
+    suspend fun getTVImages(@Path("id") id: Int): ImagesResponse
 
 }

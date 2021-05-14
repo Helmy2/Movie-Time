@@ -9,6 +9,7 @@ import com.example.movie_time.data.Repository
 import com.example.movie_time.data.Result
 import com.example.movie_time.data.movie.Cast
 import com.example.movie_time.data.movie.Movie
+import com.example.movie_time.data.movie.Poster
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,6 +23,10 @@ class MovieDetailsViewModel @Inject constructor(
     val detailsData: LiveData<Movie>
         get() = _detailsData
 
+    private val _images = MutableLiveData<List<Poster>>()
+    val images: LiveData<List<Poster>>
+        get() = _images
+
     private val _recommendationsData = MutableLiveData<List<Result>>()
     val recommendationsData: LiveData<List<Result>>
         get() = _recommendationsData
@@ -34,18 +39,18 @@ class MovieDetailsViewModel @Inject constructor(
     val error: LiveData<String?>
         get() = _error
 
-
     fun refresh(id: Int) {
         getMovieDetails(id)
         getMovieCast(id)
         getMovieRecommendations(id)
+        getMovieImages(id)
     }
 
     private fun getMovieDetails(id: Int) = viewModelScope.launch {
         val response = repository.getMovieDetails(id)
-        if (response.error == null)
+        if (response.error == null) {
             _detailsData.value = response.data!!
-        else {
+        } else {
             _error.value = response.error.localizedMessage
             Log.i("TAG", response.error.message.toString())
         }
@@ -71,4 +76,16 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
+    private fun getMovieImages(id: Int) = viewModelScope.launch {
+        val response = repository.getMovieImages(id)
+        if (response.error == null) {
+            Log.i("TAG", "getMovieImages: ${response.data.toString()}")
+            if (response.data != null) {
+                _images.value = response.data.backdrops
+            }
+        } else {
+            _error.value = response.error.localizedMessage
+            Log.i("TAG", response.error.message.toString())
+        }
+    }
 }

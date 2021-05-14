@@ -9,6 +9,7 @@ import com.example.movie_time.data.Repository
 import com.example.movie_time.data.Result
 import com.example.movie_time.data.TV
 import com.example.movie_time.data.movie.Cast
+import com.example.movie_time.data.movie.Poster
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,6 +24,10 @@ class TVDetailsViewModel @Inject constructor(
     private val _detailsData = MutableLiveData<TV>()
     val detailsData: LiveData<TV>
         get() = _detailsData
+
+    private val _images = MutableLiveData<List<Poster>>()
+    val images: LiveData<List<Poster>>
+        get() = _images
 
     private val _recommendationsData = MutableLiveData<List<Result>>()
     val recommendationsData: LiveData<List<Result>>
@@ -41,6 +46,7 @@ class TVDetailsViewModel @Inject constructor(
         getTVDetails(id)
         getTVCast(id)
         getTVRecommendations(id)
+        getTVImages(id)
     }
 
     private fun getTVDetails(id: Int) = viewModelScope.launch {
@@ -71,4 +77,16 @@ class TVDetailsViewModel @Inject constructor(
         }
     }
 
+    private fun getTVImages(id: Int) = viewModelScope.launch {
+        val response = repository.getTVImages(id)
+        if (response.error == null) {
+            Log.i("TAG", "getTVImages: ${response.data.toString()}")
+            if (response.data != null) {
+                _images.value = response.data.backdrops
+            }
+        } else {
+            _error.value = response.error.localizedMessage
+            Log.i("TAG", response.error.message.toString())
+        }
+    }
 }
