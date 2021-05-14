@@ -13,12 +13,13 @@ data class Result(
     val posterPath: String,
     @SerializedName("release_date")
     val releaseDate: String,
-    val title: String,
     @SerializedName("vote_average")
     val voteAverage: Double,
     @SerializedName("first_air_date")
     val firstAirDate: String,
     @SerializedName("media_type")
     val mediaType: String,
+
     val name: String,
+    val title: String,
 )

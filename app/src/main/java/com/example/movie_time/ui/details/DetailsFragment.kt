@@ -1,10 +1,9 @@
-package com.example.movie_time.ui.details.movie
+package com.example.movie_time.ui.details
 
 import android.annotation.SuppressLint
 import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,34 +15,35 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.movie_time.R
 import com.example.movie_time.api.MovieApi
-import com.example.movie_time.databinding.FragmentMovieDetailsBinding
+import com.example.movie_time.api.MovieApi.Companion.MOVIE
+import com.example.movie_time.databinding.FragmentDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MovieDetailsFragment : Fragment() {
+class DetailsFragment : Fragment() {
 
-    private var _binding: FragmentMovieDetailsBinding? = null
-    private val binding: FragmentMovieDetailsBinding
+    private var _binding: FragmentDetailsBinding? = null
+    private val binding: FragmentDetailsBinding
         get() = _binding!!
 
-    private val args: MovieDetailsFragmentArgs by navArgs()
+    private val args: DetailsFragmentArgs by navArgs()
 
-    private val viewModel: MovieDetailsViewModel by viewModels()
+    private val viewModel: DetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMovieDetailsBinding.inflate(layoutInflater)
+        _binding = FragmentDetailsBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val genresAdapter = GenresMovieAdapter()
-        val castAdapter = CastMovieAdapter()
-        val recommendationsAdapter = RecommendationsMovieAdapter()
+        val genresAdapter = GenresAdapter()
+        val castAdapter = CastAdapter()
+        val recommendationsAdapter = RecommendationsAdapter()
         val imageAdapter = ImageAdapter()
 
         binding.apply {
@@ -88,16 +88,49 @@ class MovieDetailsFragment : Fragment() {
                     binding.cardViewImage.visibility = View.VISIBLE
             }
 
-            detailsData.observe(viewLifecycleOwner) {
+            if (args.type == MOVIE) {
+                detailsData.observe(viewLifecycleOwner) {
+                    binding.apply {
+                        constraintLayout.visibility = View.VISIBLE
+                        genresAdapter.submitList(it.genres)
+
+                        textViewOverview.text = it.overview
+                        textViewTitle.text = it.title
+                        textViewVote.text = it.voteAverage.toString()
+
+                        Glide.with(this@DetailsFragment)
+                            .load(
+                                MovieApi.IMAGE_URL +
+                                        it.posterPath
+                            )
+                            .centerCrop()
+                            .transition(DrawableTransitionOptions.withCrossFade())
+                            .error(R.drawable.ic_placeholder_photo)
+                            .into(imageViewPoster)
+
+                        Glide.with(this@DetailsFragment)
+                            .load(
+                                MovieApi.IMAGE_URL_ORIGINAL +
+                                        it.backdropPath
+                            )
+                            .centerCrop()
+                            .transition(DrawableTransitionOptions.withCrossFade())
+                            .error(R.drawable.ic_placeholder_background)
+                            .into(imageViewBackdrop)
+
+                    }
+                }
+            }else{
+                tvDetailsData.observe(viewLifecycleOwner) {
                 binding.apply {
                     constraintLayout.visibility = View.VISIBLE
                     genresAdapter.submitList(it.genres)
 
                     textViewOverview.text = it.overview
-                    textViewTitle.text = it.title
+                    textViewTitle.text = it.name
                     textViewVote.text = it.voteAverage.toString()
 
-                    Glide.with(this@MovieDetailsFragment)
+                    Glide.with(this@DetailsFragment)
                         .load(
                             MovieApi.IMAGE_URL +
                                     it.posterPath
@@ -107,7 +140,7 @@ class MovieDetailsFragment : Fragment() {
                         .error(R.drawable.ic_placeholder_photo)
                         .into(imageViewPoster)
 
-                    Glide.with(this@MovieDetailsFragment)
+                    Glide.with(this@DetailsFragment)
                         .load(
                             MovieApi.IMAGE_URL_ORIGINAL +
                                     it.backdropPath
@@ -116,12 +149,12 @@ class MovieDetailsFragment : Fragment() {
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .error(R.drawable.ic_placeholder_background)
                         .into(imageViewBackdrop)
-
                 }
             }
 
-        }
+            }
 
+        }
         internetErrorHandling()
     }
 
@@ -133,7 +166,7 @@ class MovieDetailsFragment : Fragment() {
         connectivityManager.registerDefaultNetworkCallback(object :
             ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
-                viewModel.refresh(args.id)
+                viewModel.refresh(args.id,args.type)
             }
 
             override fun onLost(network: Network) {

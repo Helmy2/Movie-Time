@@ -1,4 +1,4 @@
-package com.example.movie_time.data
+package com.example.movie_time.data.tv
 
 
 import com.example.movie_time.data.movie.Genre

@@ -1,4 +1,4 @@
-package com.example.movie_time.ui.details.tv
+package com.example.movie_time.ui.details
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,24 +10,28 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.movie_time.R
 import com.example.movie_time.api.MovieApi
+import com.example.movie_time.api.MovieApi.Companion.MOVIE
 import com.example.movie_time.data.Result
 import com.example.movie_time.databinding.ItemMovieBinding
 
-class RecommendationsTVAdapter() :
-    ListAdapter<Result, RecommendationsTVAdapter.MovieViewHolder>(DiffCallback()) {
+class RecommendationsAdapter() :
+    ListAdapter<Result, RecommendationsAdapter.RecommendationsMovieViewHolder>(DiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecommendationsMovieViewHolder {
         val binding =
             ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MovieViewHolder(binding)
+        return RecommendationsMovieViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecommendationsMovieViewHolder, position: Int) {
         val currentItem = getItem(position)
         holder.bind(currentItem)
     }
 
-    class MovieViewHolder(private val binding: ItemMovieBinding) :
+    class RecommendationsMovieViewHolder(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(result: Result) {
@@ -53,11 +57,14 @@ class RecommendationsTVAdapter() :
                     .into(imageView)
 
                 root.setOnClickListener {
-
                     val action =
-                        TVDetailsFragmentDirections.actionTVDetailsFragment2Self(
+                        DetailsFragmentDirections.actionMovieDetailsFragmentSelf(
                             result.id,
-                            result.name
+                            if (result.type == MOVIE)
+                                result.title
+                            else
+                                result.name,
+                            type = result.type
                         )
                     it.findNavController().navigate(action)
                 }

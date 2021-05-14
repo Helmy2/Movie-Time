@@ -1,4 +1,4 @@
-package com.example.movie_time.ui.details.movie
+package com.example.movie_time.ui.details
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,8 +10,8 @@ import com.example.movie_time.api.MovieApi.Companion.MOVIE
 import com.example.movie_time.data.movie.Genre
 import com.example.movie_time.databinding.ItemGenresBinding
 
-class GenresMovieAdapter :
-    ListAdapter<Genre, GenresMovieAdapter.GenresMovieViewHolder>(DiffCallback()) {
+class GenresAdapter :
+    ListAdapter<Genre, GenresAdapter.GenresMovieViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenresMovieViewHolder {
         val binding =
@@ -32,7 +32,7 @@ class GenresMovieAdapter :
                 textViewGenre.text = genre.name
                 root.setOnClickListener {
                     val action =
-                        MovieDetailsFragmentDirections.actionMovieDetailsFragmentToListFragment(
+                        DetailsFragmentDirections.actionMovieDetailsFragmentToListFragment(
                             genre.id,
                             genre.name,
                             MOVIE

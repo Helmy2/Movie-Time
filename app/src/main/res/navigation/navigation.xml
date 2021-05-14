@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_navigation_home_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
-        <action
-            android:id="@+id/action_navigation_home_to_TVDetailsFragment2"
-            app:destination="@id/TVDetailsFragment2" />
     </fragment>
 
     <fragment
@@ -23,9 +20,6 @@
         android:name="com.example.movie_time.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" >
-        <action
-            android:id="@+id/action_navigation_search_to_TVDetailsFragment2"
-            app:destination="@id/TVDetailsFragment2" />
         <action
             android:id="@+id/action_navigation_search_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
@@ -38,9 +32,9 @@
         tools:layout="@layout/fragment_tv" />
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="com.example.movie_time.ui.details.movie.MovieDetailsFragment"
+        android:name="com.example.movie_time.ui.details.DetailsFragment"
         android:label="{title}"
-        tools:layout="@layout/fragment_movie_details">
+        tools:layout="@layout/fragment_details">
         <argument
             android:name="id"
             app:argType="integer" />
@@ -53,9 +47,9 @@
         <argument
             android:name="title"
             app:argType="string" />
-        <action
-            android:id="@+id/action_movieDetailsFragment_to_TVDetailsFragment2"
-            app:destination="@id/TVDetailsFragment2" />
+        <argument
+            android:name="type"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/listFragment"
@@ -76,27 +70,5 @@
         <argument
             android:name="type"
             app:argType="integer" />
-        <action
-            android:id="@+id/action_listFragment_to_TVDetailsFragment2"
-            app:destination="@id/TVDetailsFragment2" />
-    </fragment>
-    <fragment
-        android:id="@+id/TVDetailsFragment2"
-        android:name="com.example.movie_time.ui.details.tv.TVDetailsFragment"
-        android:label="{title}"
-        tools:layout="@layout/fragment_tv_details">
-        <action
-            android:id="@+id/action_TVDetailsFragment2_self"
-            app:destination="@id/TVDetailsFragment2" />
-        <argument
-            android:name="id"
-            app:argType="integer" />
-        <argument android:name="title" />
-        <action
-            android:id="@+id/action_TVDetailsFragment2_to_movieDetailsFragment"
-            app:destination="@id/movieDetailsFragment" />
-        <action
-            android:id="@+id/action_TVDetailsFragment2_to_listFragment"
-            app:destination="@id/listFragment" />
     </fragment>
 </navigation>

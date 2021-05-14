@@ -12,6 +12,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.movie_time.R
 import com.example.movie_time.api.MovieApi
 import com.example.movie_time.api.MovieApi.Companion.MOVIE
+import com.example.movie_time.api.MovieApi.Companion.TV
 import com.example.movie_time.data.Result
 import com.example.movie_time.databinding.ItemListBinding
 
@@ -62,14 +63,16 @@ class ListAdapter() :
                         val action =
                             ListFragmentDirections.actionListFragmentToMovieDetailsFragment(
                                 result.id,
-                                result.title
+                                result.title,
+                                MOVIE
                             )
                         it.findNavController().navigate(action)
                     } else {
                         val action =
-                            ListFragmentDirections.actionListFragmentToTVDetailsFragment2(
+                            ListFragmentDirections.actionListFragmentToMovieDetailsFragment(
                                 result.id,
-                                result.name
+                                result.name,
+                                TV
                             )
                         it.findNavController().navigate(action)
                     }

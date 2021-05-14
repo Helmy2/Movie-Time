@@ -1,4 +1,4 @@
-package com.example.movie_time.ui.details.movie
+package com.example.movie_time.ui.details
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,8 +14,8 @@ import com.example.movie_time.api.MovieApi.Companion.CREDITS
 import com.example.movie_time.data.movie.Cast
 import com.example.movie_time.databinding.ItemCastBinding
 
-class CastMovieAdapter :
-    ListAdapter<Cast, CastMovieAdapter.CastMovieViewHolder>(DiffCallback()) {
+class CastAdapter :
+    ListAdapter<Cast, CastAdapter.CastMovieViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastMovieViewHolder {
         val binding =
@@ -48,7 +48,7 @@ class CastMovieAdapter :
 
                 root.setOnClickListener {
                     val action =
-                        MovieDetailsFragmentDirections.actionMovieDetailsFragmentToListFragment(
+                        DetailsFragmentDirections.actionMovieDetailsFragmentToListFragment(
                             cast.id,
                             cast.name,
                             CREDITS

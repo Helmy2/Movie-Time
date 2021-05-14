@@ -3,7 +3,7 @@ package com.example.movie_time.api
 
 import com.example.movie_time.data.CreditResponse
 import com.example.movie_time.data.ResultResponse
-import com.example.movie_time.data.TV
+import com.example.movie_time.data.tv.TV
 import com.example.movie_time.data.movie.CastResponse
 import com.example.movie_time.data.movie.Movie
 import com.example.movie_time.data.ImagesResponse

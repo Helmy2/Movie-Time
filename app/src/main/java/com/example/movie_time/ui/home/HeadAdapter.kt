@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.movie_time.R
 import com.example.movie_time.api.MovieApi
+import com.example.movie_time.api.MovieApi.Companion.MOVIE
+import com.example.movie_time.api.MovieApi.Companion.TV
 import com.example.movie_time.data.Result
 import com.example.movie_time.databinding.ItemHeadBinding
 
@@ -60,18 +62,20 @@ class HeadAdapter :
                     .into(imageViewBackdrop)
 
                 root.setOnClickListener {
-                    if (result.type == MovieApi.MOVIE) {
+                    if (result.type == MOVIE) {
                         val action =
                             HomeFragmentDirections.actionNavigationHomeToMovieDetailsFragment(
                                 result.id,
-                                result.title
+                                result.title,
+                                MOVIE
                             )
                         it.findNavController().navigate(action)
                     } else {
                         val action =
-                            HomeFragmentDirections.actionNavigationHomeToTVDetailsFragment2(
+                            HomeFragmentDirections.actionNavigationHomeToMovieDetailsFragment(
                                 result.id,
-                                result.name
+                                result.name,
+                                TV
                             )
                         it.findNavController().navigate(action)
                     }
