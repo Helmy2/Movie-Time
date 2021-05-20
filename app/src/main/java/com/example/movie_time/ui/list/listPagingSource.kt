@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.movie_time.api.MovieApi
-import com.example.movie_time.api.MovieApi.Companion.CREDITS
+import com.example.movie_time.api.MovieApi.Companion.PERSON
 import com.example.movie_time.api.MovieApi.Companion.MOVIE
 import com.example.movie_time.api.MovieApi.Companion.TV
 import com.example.movie_time.data.Result
@@ -34,7 +34,7 @@ class listPagingSource(
                     list = response.results
                     list.map { it.type = TV }
                 }
-                CREDITS -> {
+                PERSON -> {
                     if (position == 1) {
                         val responseMovie = movieApi.getMovieCredits(id)
                         responseMovie.cast.map { it.type = MOVIE }

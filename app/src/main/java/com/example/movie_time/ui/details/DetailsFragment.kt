@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.movie_time.R
 import com.example.movie_time.api.MovieApi
 import com.example.movie_time.api.MovieApi.Companion.MOVIE
+import com.example.movie_time.api.MovieApi.Companion.TV
 import com.example.movie_time.databinding.FragmentDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -70,91 +71,94 @@ class DetailsFragment : Fragment() {
         }
 
         viewModel.apply {
-            castData.observe(viewLifecycleOwner) {
+            castData.observeForever {
                 castAdapter.submitList(it)
                 if (it.isNotEmpty())
                     binding.cardViewFullCast.visibility = View.VISIBLE
             }
 
-            recommendationsData.observe(viewLifecycleOwner) {
+            recommendationsData.observeForever {
                 recommendationsAdapter.submitList(it)
                 if (it.isNotEmpty())
                     binding.cardViewSimilar.visibility = View.VISIBLE
             }
 
-            images.observe(viewLifecycleOwner) {
+            images.observeForever {
                 imageAdapter.submitList(it)
                 if (it.isNotEmpty())
                     binding.cardViewImage.visibility = View.VISIBLE
             }
 
-            if (args.type == MOVIE) {
-                detailsData.observe(viewLifecycleOwner) {
-                    binding.apply {
-                        constraintLayout.visibility = View.VISIBLE
-                        genresAdapter.submitList(it.genres)
+            when (args.type) {
+                MOVIE -> {
+                    movieDetailsData.observeForever{
+                        binding.apply {
+                            constraintLayout.visibility = View.VISIBLE
+                            genresAdapter.submitList(it.genres)
 
-                        textViewOverview.text = it.overview
-                        textViewTitle.text = it.title
-                        textViewVote.text = it.voteAverage.toString()
+                            textViewOverview.text = it.overview
+                            textViewTitle.text = it.title
+                            textViewVote.text = it.voteAverage.toString()
 
-                        Glide.with(this@DetailsFragment)
-                            .load(
-                                MovieApi.IMAGE_URL +
-                                        it.posterPath
-                            )
-                            .centerCrop()
-                            .transition(DrawableTransitionOptions.withCrossFade())
-                            .error(R.drawable.ic_placeholder_photo)
-                            .into(imageViewPoster)
+                            Glide.with(this@DetailsFragment)
+                                .load(
+                                    MovieApi.IMAGE_URL +
+                                            it.posterPath
+                                )
+                                .centerCrop()
+                                .transition(DrawableTransitionOptions.withCrossFade())
+                                .error(R.drawable.ic_placeholder_photo)
+                                .into(imageViewPoster)
 
-                        Glide.with(this@DetailsFragment)
-                            .load(
-                                MovieApi.IMAGE_URL_ORIGINAL +
-                                        it.backdropPath
-                            )
-                            .centerCrop()
-                            .transition(DrawableTransitionOptions.withCrossFade())
-                            .error(R.drawable.ic_placeholder_background)
-                            .into(imageViewBackdrop)
+                            Glide.with(this@DetailsFragment)
+                                .load(
+                                    MovieApi.IMAGE_URL_ORIGINAL +
+                                            it.backdropPath
+                                )
+                                .centerCrop()
+                                .transition(DrawableTransitionOptions.withCrossFade())
+                                .error(R.drawable.ic_placeholder_background)
+                                .into(imageViewBackdrop)
 
+                        }
                     }
                 }
-            }else{
-                tvDetailsData.observe(viewLifecycleOwner) {
-                binding.apply {
-                    constraintLayout.visibility = View.VISIBLE
-                    genresAdapter.submitList(it.genres)
+                TV -> {
+                    tvDetailsData.observeForever{
+                        binding.apply {
+                            constraintLayout.visibility = View.VISIBLE
+                            genresAdapter.submitList(it.genres)
 
-                    textViewOverview.text = it.overview
-                    textViewTitle.text = it.name
-                    textViewVote.text = it.voteAverage.toString()
+                            textViewOverview.text = it.overview
+                            textViewTitle.text = it.name
+                            textViewVote.text = it.voteAverage.toString()
 
-                    Glide.with(this@DetailsFragment)
-                        .load(
-                            MovieApi.IMAGE_URL +
-                                    it.posterPath
-                        )
-                        .centerCrop()
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .error(R.drawable.ic_placeholder_photo)
-                        .into(imageViewPoster)
+                            Glide.with(this@DetailsFragment)
+                                .load(
+                                    MovieApi.IMAGE_URL +
+                                            it.posterPath
+                                )
+                                .centerCrop()
+                                .transition(DrawableTransitionOptions.withCrossFade())
+                                .error(R.drawable.ic_placeholder_photo)
+                                .into(imageViewPoster)
 
-                    Glide.with(this@DetailsFragment)
-                        .load(
-                            MovieApi.IMAGE_URL_ORIGINAL +
-                                    it.backdropPath
-                        )
-                        .centerCrop()
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .error(R.drawable.ic_placeholder_background)
-                        .into(imageViewBackdrop)
+                            Glide.with(this@DetailsFragment)
+                                .load(
+                                    MovieApi.IMAGE_URL_ORIGINAL +
+                                            it.backdropPath
+                                )
+                                .centerCrop()
+                                .transition(DrawableTransitionOptions.withCrossFade())
+                                .error(R.drawable.ic_placeholder_background)
+                                .into(imageViewBackdrop)
+                        }
+                    }
                 }
-            }
-
             }
 
         }
+
         internetErrorHandling()
     }
 
@@ -168,9 +172,7 @@ class DetailsFragment : Fragment() {
             override fun onAvailable(network: Network) {
                 viewModel.refresh(args.id,args.type)
             }
-
             override fun onLost(network: Network) {
-
             }
         })
     }

@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.movie_time.R
 import com.example.movie_time.api.MovieApi
-import com.example.movie_time.api.MovieApi.Companion.CREDITS
+import com.example.movie_time.api.MovieApi.Companion.PERSON
 import com.example.movie_time.data.movie.Cast
 import com.example.movie_time.databinding.ItemCastBinding
 
@@ -51,7 +51,7 @@ class CastAdapter :
                         DetailsFragmentDirections.actionMovieDetailsFragmentToListFragment(
                             cast.id,
                             cast.name,
-                            CREDITS
+                            PERSON
                         )
                     it.findNavController().navigate(action)
                 }

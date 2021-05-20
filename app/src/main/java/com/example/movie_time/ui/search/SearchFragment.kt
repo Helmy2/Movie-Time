@@ -6,10 +6,12 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.movie_time.R
 import com.example.movie_time.databinding.FragmentSearchBinding
 import com.example.movie_time.ui.home.MovieAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,7 +40,7 @@ class SearchFragment : Fragment() {
         val listAdapter = SearchAdapter()
         binding.recyclerViewSearch.adapter = listAdapter
 
-        viewModel.searchListData.observe(viewLifecycleOwner) {
+        viewModel.searchListData.observeForever{
             listAdapter.submitList(it)
         }
 
@@ -50,10 +52,14 @@ class SearchFragment : Fragment() {
 
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
+        val navView: BottomNavigationView = requireActivity().findViewById(R.id.nav_view)
 
         searchView.onQueryTextChanged {
             viewModel.getSearch(it)
+//            navView.visibility = View.GONE
         }
+
+
     }
 
     private inline fun SearchView.onQueryTextChanged(crossinline listener: (String) -> Unit) {

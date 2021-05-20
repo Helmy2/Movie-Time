@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.liveData
 import com.example.movie_time.api.MovieApi
 import com.example.movie_time.api.MovieApi.Companion.MOVIE
+import com.example.movie_time.api.MovieApi.Companion.PERSON
 import com.example.movie_time.api.MovieApi.Companion.TV
 import com.example.movie_time.ui.list.listPagingSource
 import com.example.movie_time.util.Resource
@@ -110,8 +111,10 @@ class Repository @Inject constructor(
         data.results.map {
             if (it.mediaType == "movie")
                 it.type = MOVIE
-            else
+            else if(it.mediaType == "tv")
                 it.type = TV
+            else if(it.mediaType == "person")
+                it.type = PERSON
         }
         Resource.Success(data)
     } catch (e: Exception) {

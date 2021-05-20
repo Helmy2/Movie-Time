@@ -21,7 +21,7 @@ interface MovieApi {
         const val IMAGE_URL_ORIGINAL = "https://image.tmdb.org/t/p/original/"
         const val MOVIE = 1
         const val TV = 2
-        const val CREDITS = 3
+        const val PERSON = 3
         const val DAY = "day"
         const val WEEK = "week"
     }

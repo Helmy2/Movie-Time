@@ -22,4 +22,8 @@ data class Result(
 
     val name: String,
     val title: String,
+
+    @SerializedName("profile_path")
+    val profilePath: String,
+
 )

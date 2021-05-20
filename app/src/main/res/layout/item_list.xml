@@ -42,12 +42,12 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/imageView3"
+            app:layout_constraintStart_toStartOf="@+id/image_star_rate"
             app:layout_constraintTop_toBottomOf="@+id/textViewVote"
             tools:text="Justice League fgdfgdfgdfgf fdgdfg fgsdg fsgdf" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/image_star_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -62,9 +62,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
-            app:layout_constraintTop_toTopOf="@+id/imageView3"
+            app:layout_constraintBottom_toBottomOf="@+id/image_star_rate"
+            app:layout_constraintStart_toEndOf="@+id/image_star_rate"
+            app:layout_constraintTop_toTopOf="@+id/image_star_rate"
             tools:text="9.8" />
 
         <TextView

@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_navigation_search_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
+        <action
+            android:id="@+id/action_navigation_search_to_listFragment"
+            app:destination="@id/listFragment" />
     </fragment>
 
     <fragment

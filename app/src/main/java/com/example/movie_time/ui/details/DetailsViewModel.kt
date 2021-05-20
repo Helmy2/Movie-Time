@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movie_time.api.MovieApi.Companion.MOVIE
+import com.example.movie_time.api.MovieApi.Companion.TV
 import com.example.movie_time.data.Repository
 import com.example.movie_time.data.Result
 import com.example.movie_time.data.movie.Cast
@@ -21,9 +22,9 @@ class DetailsViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
-    private val _detailsData = MutableLiveData<Movie>()
-    val detailsData: LiveData<Movie>
-        get() = _detailsData
+    private val _movieDetailsData = MutableLiveData<Movie>()
+    val movieDetailsData: LiveData<Movie>
+        get() = _movieDetailsData
 
     private val _tvDetailsData = MutableLiveData<TV>()
     val tvDetailsData: LiveData<TV>
@@ -41,30 +42,28 @@ class DetailsViewModel @Inject constructor(
     val castData: LiveData<List<Cast>>
         get() = _castData
 
-    private val _error = MutableLiveData<String?>()
-    val error: LiveData<String?>
-        get() = _error
-
     fun refresh(id: Int, type: Int) {
-        if (type == MOVIE) {
-            getMovieDetails(id)
-            getMovieCast(id)
-            getMovieRecommendations(id)
-            getMovieImages(id)
-        } else{
-            getTVDetails(id)
-            getTVCast(id)
-            getTVRecommendations(id)
-            getTVImages(id)
+        when (type) {
+            MOVIE -> {
+                getMovieDetails(id)
+                getMovieCast(id)
+                getMovieRecommendations(id)
+                getMovieImages(id)
+            }
+            TV -> {
+                getTVDetails(id)
+                getTVCast(id)
+                getTVRecommendations(id)
+                getTVImages(id)
+            }
         }
     }
 
     private fun getMovieDetails(id: Int) = viewModelScope.launch {
         val response = repository.getMovieDetails(id)
         if (response.error == null) {
-            _detailsData.value = response.data!!
+            _movieDetailsData.value = response.data!!
         } else {
-            _error.value = response.error.localizedMessage
             Log.i("TAG", response.error.message.toString())
         }
     }
@@ -74,7 +73,6 @@ class DetailsViewModel @Inject constructor(
         if (response.error == null)
             _castData.value = response.data!!
         else {
-            _error.value = response.error.localizedMessage
             Log.i("TAG", response.error.message.toString())
         }
     }
@@ -84,7 +82,6 @@ class DetailsViewModel @Inject constructor(
         if (response.error == null)
             _recommendationsData.value = response.data?.results
         else {
-            _error.value = response.error.localizedMessage
             Log.i("TAG", response.error.message.toString())
         }
     }
@@ -97,7 +94,6 @@ class DetailsViewModel @Inject constructor(
                 _images.value = response.data.backdrops
             }
         } else {
-            _error.value = response.error.localizedMessage
             Log.i("TAG", response.error.message.toString())
         }
     }
@@ -108,7 +104,6 @@ class DetailsViewModel @Inject constructor(
         if (response.error == null)
             _tvDetailsData.value = response.data!!
         else {
-            _error.value = response.error.localizedMessage
             Log.i("TAG", response.error.message.toString())
         }
     }
@@ -139,7 +134,6 @@ class DetailsViewModel @Inject constructor(
                 _images.value = response.data.backdrops
             }
         } else {
-            _error.value = response.error.localizedMessage
             Log.i("TAG", response.error.message.toString())
         }
     }

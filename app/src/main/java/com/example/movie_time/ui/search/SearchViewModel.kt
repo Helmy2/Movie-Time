@@ -28,7 +28,8 @@ class SearchViewModel @Inject constructor(
     fun getSearch(query: String) = viewModelScope.launch {
         val response = repository.getSearch(query)
         if (response.error == null) {
-            _searchListData.value = response.data?.results?.filter { it.voteAverage != 0.0 }
+            _searchListData.value = response.data?.results
+//                ?.filter { it.voteAverage != 0.0 }
             Log.i("TAG", "getSearch: ${response.data?.results.toString()}")
         } else {
             Log.i("TAG", response.error.message.toString())
