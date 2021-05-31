@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_tv
+                R.id.navigation_home, R.id.navigation_search
             )
         )
 
@@ -47,10 +47,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_search -> {
                     navView.visibility = View.VISIBLE
                     toolbar.visibility = View.VISIBLE
-                }
-                R.id.navigation_tv -> {
-                    navView.visibility = View.VISIBLE
-                    toolbar.visibility = View.GONE
                 }
                 else -> {
                     navView.visibility = View.GONE
