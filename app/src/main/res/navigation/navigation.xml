@@ -29,11 +29,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_tv"
-        android:name="com.example.movie_time.ui.tv.TVFragment"
-        android:label="@string/title_tv"
-        tools:layout="@layout/fragment_tv" />
-    <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="com.example.movie_time.ui.details.DetailsFragment"
         android:label="{title}"
