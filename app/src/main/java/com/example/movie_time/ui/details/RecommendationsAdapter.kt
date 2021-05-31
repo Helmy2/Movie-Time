@@ -37,7 +37,7 @@ class RecommendationsAdapter() :
         fun bind(result: Result) {
             binding.apply {
 
-                if (result.type == MovieApi.MOVIE) {
+                if (result.type == MOVIE) {
                     textView.text = result.title
                     textViewReleaseDate.text = result.releaseDate
                 } else {

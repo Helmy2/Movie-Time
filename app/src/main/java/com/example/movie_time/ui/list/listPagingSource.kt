@@ -34,19 +34,6 @@ class listPagingSource(
                     list = response.results
                     list.map { it.type = TV }
                 }
-                PERSON -> {
-                    if (position == 1) {
-                        val responseMovie = movieApi.getMovieCredits(id)
-                        responseMovie.cast.map { it.type = MOVIE }
-                        list.addAll(responseMovie.cast.filter { it.voteAverage > 0 })
-
-                        val responseTV = movieApi.getTVCredits(id)
-                        responseTV.cast.map { it.type = TV }
-                        list.addAll(responseTV.cast.filter { it.voteAverage > 0 })
-
-                        list.sortByDescending { it.voteAverage }
-                    }
-                }
             }
 
             LoadResult.Page(

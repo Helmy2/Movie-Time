@@ -48,7 +48,7 @@ class CastAdapter :
 
                 root.setOnClickListener {
                     val action =
-                        DetailsFragmentDirections.actionMovieDetailsFragmentToListFragment(
+                        DetailsFragmentDirections.actionMovieDetailsFragmentSelf(
                             cast.id,
                             cast.name,
                             PERSON

@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.movie_time.R
 import com.example.movie_time.api.MovieApi
 import com.example.movie_time.api.MovieApi.Companion.MOVIE
+import com.example.movie_time.api.MovieApi.Companion.PERSON
 import com.example.movie_time.api.MovieApi.Companion.TV
 import com.example.movie_time.databinding.FragmentDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,7 +45,8 @@ class DetailsFragment : Fragment() {
 
         val genresAdapter = GenresAdapter()
         val castAdapter = CastAdapter()
-        val recommendationsAdapter = RecommendationsAdapter()
+        val firstAdapter = RecommendationsAdapter()
+        val secondAdapter = RecommendationsAdapter()
         val imageAdapter = ImageAdapter()
 
         binding.apply {
@@ -58,13 +60,18 @@ class DetailsFragment : Fragment() {
                 layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
-            recyclerViewRecommendations.apply {
-                adapter = recommendationsAdapter
+            recyclerViewImage.apply {
+                adapter = imageAdapter
                 layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
-            recyclerViewImage.apply {
-                adapter = imageAdapter
+            recyclerViewFirst.apply {
+                adapter = firstAdapter
+                layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            }
+            recyclerViewSecond.apply {
+                adapter = secondAdapter
                 layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
@@ -77,21 +84,36 @@ class DetailsFragment : Fragment() {
                     binding.cardViewFullCast.visibility = View.VISIBLE
             }
 
-            recommendationsData.observeForever {
-                recommendationsAdapter.submitList(it)
-                if (it.isNotEmpty())
-                    binding.cardViewSimilar.visibility = View.VISIBLE
+            images.observeForever {
+                if (it.size > 1) {
+                    imageAdapter.submitList(it)
+                    binding.cardViewImage.visibility = View.VISIBLE
+                }
             }
 
-            images.observeForever {
-                imageAdapter.submitList(it)
+            recommendationsData.observeForever {
+                firstAdapter.submitList(it)
                 if (it.isNotEmpty())
-                    binding.cardViewImage.visibility = View.VISIBLE
+                    binding.cardViewFirst.visibility = View.VISIBLE
+            }
+
+            movieListData.observeForever {
+                binding.textViewFirst.text = getText(R.string.movie)
+                firstAdapter.submitList(it)
+                if (it.isNotEmpty())
+                    binding.cardViewFirst.visibility = View.VISIBLE
+            }
+
+            tvListData.observeForever {
+                binding.textViewSecond.text = getText(R.string.tv_series)
+                secondAdapter.submitList(it)
+                if (it.isNotEmpty())
+                    binding.cardViewSecond.visibility = View.VISIBLE
             }
 
             when (args.type) {
                 MOVIE -> {
-                    movieDetailsData.observeForever{
+                    movieDetailsData.observeForever {
                         binding.apply {
                             constraintLayout.visibility = View.VISIBLE
                             genresAdapter.submitList(it.genres)
@@ -124,7 +146,7 @@ class DetailsFragment : Fragment() {
                     }
                 }
                 TV -> {
-                    tvDetailsData.observeForever{
+                    tvDetailsData.observeForever {
                         binding.apply {
                             constraintLayout.visibility = View.VISIBLE
                             genresAdapter.submitList(it.genres)
@@ -155,6 +177,28 @@ class DetailsFragment : Fragment() {
                         }
                     }
                 }
+                PERSON -> {
+                    binding.apply {
+                        personDetailsData.observeForever {
+                            constraintLayout.visibility = View.VISIBLE
+                            textViewOverview.text = it.biography
+
+                            Glide.with(this@DetailsFragment)
+                                .load(
+                                    MovieApi.IMAGE_URL +
+                                            it.profilePath
+                                )
+                                .centerCrop()
+                                .transition(DrawableTransitionOptions.withCrossFade())
+                                .error(R.drawable.ic_placeholder_photo)
+                                .into(imageViewPoster)
+                        }
+
+                        imageViewBackdrop.visibility = View.GONE
+                        imageStarRate.visibility = View.GONE
+                        textViewTitle.visibility = View.GONE
+                    }
+                }
             }
 
         }
@@ -170,8 +214,9 @@ class DetailsFragment : Fragment() {
         connectivityManager.registerDefaultNetworkCallback(object :
             ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
-                viewModel.refresh(args.id,args.type)
+                viewModel.refresh(args.id, args.type)
             }
+
             override fun onLost(network: Network) {
             }
         })

@@ -7,6 +7,7 @@ import com.example.movie_time.data.tv.TV
 import com.example.movie_time.data.movie.CastResponse
 import com.example.movie_time.data.movie.Movie
 import com.example.movie_time.data.ImagesResponse
+import com.example.movie_time.data.person.Person
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -82,4 +83,11 @@ interface MovieApi {
     @GET("tv/{id}/images$API_KEY")
     suspend fun getTVImages(@Path("id") id: Int): ImagesResponse
 
+//    person/{person_id}?api_key=<<api_key>>
+
+    @GET("person/{id}$API_KEY")
+    suspend fun getPersonDetails(@Path("id") id: Int): Person
+
+    @GET("person/{id}/images$API_KEY")
+    suspend fun getPersonImages(@Path("id") id: Int): ImagesResponse
 }

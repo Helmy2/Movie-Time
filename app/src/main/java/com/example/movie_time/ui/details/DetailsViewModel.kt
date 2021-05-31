@@ -6,12 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movie_time.api.MovieApi.Companion.MOVIE
+import com.example.movie_time.api.MovieApi.Companion.PERSON
 import com.example.movie_time.api.MovieApi.Companion.TV
 import com.example.movie_time.data.Repository
 import com.example.movie_time.data.Result
 import com.example.movie_time.data.movie.Cast
 import com.example.movie_time.data.movie.Movie
 import com.example.movie_time.data.movie.Poster
+import com.example.movie_time.data.person.Person
 import com.example.movie_time.data.tv.TV
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -25,6 +27,10 @@ class DetailsViewModel @Inject constructor(
     private val _movieDetailsData = MutableLiveData<Movie>()
     val movieDetailsData: LiveData<Movie>
         get() = _movieDetailsData
+
+    private val _personDetailsData = MutableLiveData<Person>()
+    val personDetailsData: LiveData<Person>
+        get() = _personDetailsData
 
     private val _tvDetailsData = MutableLiveData<TV>()
     val tvDetailsData: LiveData<TV>
@@ -42,6 +48,16 @@ class DetailsViewModel @Inject constructor(
     val castData: LiveData<List<Cast>>
         get() = _castData
 
+    private val _movieListData = MutableLiveData<List<Result>>()
+    val movieListData: LiveData<List<Result>>
+        get() = _movieListData
+
+    private val _tvListData = MutableLiveData<List<Result>>()
+    val tvListData: LiveData<List<Result>>
+        get() = _tvListData
+
+
+
     fun refresh(id: Int, type: Int) {
         when (type) {
             MOVIE -> {
@@ -55,6 +71,12 @@ class DetailsViewModel @Inject constructor(
                 getTVCast(id)
                 getTVRecommendations(id)
                 getTVImages(id)
+            }
+            PERSON -> {
+                getPersonDetails(id)
+                getPersonImages(id)
+                getMovieCredits(id)
+                getTVCredits(id)
             }
         }
     }
@@ -137,4 +159,46 @@ class DetailsViewModel @Inject constructor(
             Log.i("TAG", response.error.message.toString())
         }
     }
+
+    private fun getPersonDetails(id: Int) = viewModelScope.launch {
+        val response = repository.getPersonDetails(id)
+        if (response.error == null) {
+            _personDetailsData.value = response.data!!
+            Log.i("TAG", response.data.toString())
+        }
+        else {
+            Log.i("TAG", response.error.message.toString())
+        }
+    }
+
+    private fun getPersonImages(id: Int) = viewModelScope.launch {
+        val response = repository.getPersonImages(id)
+        if (response.error == null) {
+            Log.i("TAG", "getTVImages: ${response.data.toString()}")
+            if (response.data != null) {
+                _images.value = response.data.profiles
+            }
+        } else {
+            Log.i("TAG", response.error.message.toString())
+        }
+    }
+
+    private fun getTVCredits(id: Int) = viewModelScope.launch {
+        val response = repository.getTVCredits(id)
+        if (response.error == null)
+            _tvListData.value = response.data?.cast
+        else {
+            Log.i("TAG", response.error.message.toString())
+        }
+    }
+
+    private fun getMovieCredits(id: Int) = viewModelScope.launch {
+        val response = repository.getMovieCredits(id)
+        if (response.error == null)
+            _movieListData.value = response.data?.cast
+        else {
+            Log.i("TAG", response.error.message.toString())
+        }
+    }
+
 }

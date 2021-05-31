@@ -109,12 +109,11 @@ class Repository @Inject constructor(
     suspend fun getSearch(query: String) = try {
         val data = api.getSearch(query)
         data.results.map {
-            if (it.mediaType == "movie")
-                it.type = MOVIE
-            else if(it.mediaType == "tv")
-                it.type = TV
-            else if(it.mediaType == "person")
-                it.type = PERSON
+            when (it.mediaType) {
+                "movie" -> it.type = MOVIE
+                "tv" -> it.type = TV
+                "person" -> it.type = PERSON
+            }
         }
         Resource.Success(data)
     } catch (e: Exception) {
@@ -136,4 +135,33 @@ class Repository @Inject constructor(
         Resource.Error(e)
     }
 
+    suspend fun getPersonDetails(id: Int) = try {
+        val data = api.getPersonDetails(id)
+        Resource.Success(data)
+    } catch (e: Exception) {
+        Resource.Error(e)
+    }
+
+    suspend fun getPersonImages(id: Int) = try {
+        val data = api.getPersonImages(id)
+        Resource.Success(data)
+    } catch (e: Exception) {
+        Resource.Error(e)
+    }
+
+    suspend fun getTVCredits(id: Int) = try {
+        val data = api.getTVCredits(id)
+        data.cast.map { it.type = TV }
+        Resource.Success(data)
+    } catch (e: Exception) {
+        Resource.Error(e)
+    }
+
+    suspend fun getMovieCredits(id: Int) = try {
+        val data = api.getMovieCredits(id)
+        data.cast.map { it.type = MOVIE }
+        Resource.Success(data)
+    } catch (e: Exception) {
+        Resource.Error(e)
+    }
 }

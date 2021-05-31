@@ -1,5 +1,6 @@
 package com.example.movie_time.ui.home
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
@@ -14,6 +15,7 @@ import com.example.movie_time.api.MovieApi.Companion.MOVIE
 import com.example.movie_time.api.MovieApi.Companion.TV
 import com.example.movie_time.data.Result
 import com.example.movie_time.databinding.ItemMovieBinding
+import java.time.format.DateTimeFormatter
 
 class MovieAdapter() :
     ListAdapter<Result, MovieAdapter.MovieViewHolder>(DiffCallback()) {
@@ -32,12 +34,14 @@ class MovieAdapter() :
     class MovieViewHolder(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        @SuppressLint("NewApi")
         fun bind(result: Result) {
             binding.apply {
 
                 if (result.type == MOVIE) {
                     textView.text = result.title
                     textViewReleaseDate.text = result.releaseDate
+
                 } else {
                     textView.text = result.name
                     textViewReleaseDate.text = result.firstAirDate

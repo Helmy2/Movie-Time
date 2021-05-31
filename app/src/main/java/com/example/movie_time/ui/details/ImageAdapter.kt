@@ -37,7 +37,6 @@ class ImageAdapter :
                         MovieApi.IMAGE_URL +
                                 cast.filePath
                     )
-                    .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .error(R.drawable.ic_placeholder_background)
                     .into(imageView)
